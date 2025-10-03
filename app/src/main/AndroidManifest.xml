@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ClubDeportivoMB">
         <activity
+            android:name=".homeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pantalla_base"
+            android:exported="false" />
+        <activity
+            android:name=".personal_menu"
+            android:exported="false" />
+        <activity
+            android:name=".Registrousuario"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

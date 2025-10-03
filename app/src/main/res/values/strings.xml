@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ClubDeportivoMB</string>
+    <string name="necesitas_ayuda">¿Necesitas Ayuda?</string>
+    <string name="usuario">Usuario</string>
+    <string name="qu_necesitas_hacer_en_personal">¿Qué necesitas hacer en Personal?</string>
+    <string-array name="areas_array">
+        <item>Administración</item>
+        <item>Profesores</item>
+        <item>Recepción</item>
+    </string-array>
 </resources>

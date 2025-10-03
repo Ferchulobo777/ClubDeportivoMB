@@ -20,7 +20,7 @@
         android:textColor="#FFFFFF"
         android:gravity="center"
         android:padding="16dp"
-        margin/>
+        android:layout_margin="16dp" />
 
     <ImageView
         android:id="@+id/main_portada"
