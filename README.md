@@ -1,2 +1,2 @@
-# club_deportivo_mb
+# ClubDeportivoMB
 Desarrollo de Aplicaciones de Dispositivos Moviles
