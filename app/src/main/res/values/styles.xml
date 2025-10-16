@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Estilo para texto con Inria Sans -->
+    <style name="InriaSansText">
+        <item name="android:fontFamily">@font/inria_sans</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- Estilo para texto bold -->
+    <style name="InriaSansTextBold">
+        <item name="android:fontFamily">@font/inria_sans</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Estilo para texto más grande -->
+    <style name="InriaSansTextLarge">
+        <item name="android:fontFamily">@font/inria_sans</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <!-- Estilo para texto bold mas grande -->
+    <style name="InriaSansTextLargeBold">
+        <item name="android:fontFamily">@font/inria_sans</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="SpinnerDropDownStyle">
+        <item name="android:popupBackground">#F1F3DF</item>
+    </style>
+</resources>

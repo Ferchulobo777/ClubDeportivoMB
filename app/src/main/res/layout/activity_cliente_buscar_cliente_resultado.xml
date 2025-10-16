@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#1D1B41"
+    android:padding="32dp">
+
+    <!-- ===== HEADER ===== -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgUsuario"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+            android:src="@drawable/person_24"
+            app:strokeColor="@color/white"
+            app:strokeWidth="1dp"
+            app:backgroundTint="#1D1B41" />
+
+        <TextView
+            android:id="@+id/tvUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_toEndOf="@id/imgUsuario"
+            android:layout_marginStart="12dp"
+            android:gravity="center_vertical"
+            android:text="Usuario"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/inria_sans" />
+
+        <ImageView
+            android:id="@+id/iconBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/chevron_backward_24"
+            android:tint="#FFFFFF" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/imgPelota"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/soccer_ball" />
+
+            <TextView
+                android:id="@+id/title_resultado_busqueda_cliente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Resultados de la busqueda del Cliente"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/inria_sans" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- ===== CARD RESULTADOS ===== -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="#3E3A72"
+        app:cardElevation="4dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Selecciona un cliente:"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/inria_sans" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvClientes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
+        </ScrollView>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- ===== GRID DE BOTONES DE ACCIÓN ===== -->
+    <GridLayout
+        android:id="@+id/gridAcciones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:alignmentMode="alignMargins"
+        android:rowCount="2"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp"
+        android:useDefaultMargins="true"
+        android:gravity="center">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnModificar"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:icon="@drawable/edit_square_24"
+            app:cornerRadius="12dp"
+            app:iconGravity="textTop"
+            app:iconPadding="8dp"
+            android:text="Modificar"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#00BCD4" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEliminar"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:icon="@drawable/delete_24"
+            app:cornerRadius="12dp"
+            app:iconGravity="textTop"
+            app:iconPadding="8dp"
+            android:text="Eliminar"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#FF5252" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPagos"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:icon="@drawable/payments_24"
+            app:cornerRadius="12dp"
+            app:iconGravity="textTop"
+            app:iconPadding="8dp"
+            android:text="Pagos"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#3A3672" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnActividades"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:icon="@drawable/fitness_center_24"
+            app:cornerRadius="12dp"
+            app:iconGravity="textTop"
+            app:iconPadding="8dp"
+            android:text="Actividades"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#3A3672" />
+    </GridLayout>
+
+    <!-- ===== FOOTER ===== -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="¿Necesitas Ayuda?"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:fontFamily="@font/inria_sans"
+        android:layout_marginTop="8dp" />
+</LinearLayout>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="#000000">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="560dp"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="#3E3A72"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="560dp"
+            android:background="#1D1B41">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                android:background="#1D1B41">
+
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    app:srcCompat="@drawable/info_24"
+                    android:layout_gravity="center_horizontal"
+                    app:tint="#FFFFFF"
+                    />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="150dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    app:srcCompat="@drawable/logo_ifts" />
+
+                <TextView
+                    android:id="@+id/tvMensaje"
+                    android:text="Este proyecto forma parte de la materia Desarrollo de Aplicaciones para Dispositivos Móviles, utilizando Kotlin y Material Design para lograr una interfaz moderna y funcional."
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/inria_sans" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                android:background="#1D1B41">
+
+                <TextView
+                    android:id="@+id/modal_acerca_title3"
+                    android:text="Creado por :"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/inria_sans"
+                    android:textColor="#FFFFFF" />
+
+                <!-- Lista de personas -->
+                <TextView
+                    android:text="- Fernando Rodriguez"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#E0E0E0"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/inria_sans"
+                    android:layout_marginTop="20dp" />
+
+                <TextView
+                    android:text="- Vanesa Aracena"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#E0E0E0"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/inria_sans"
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:text="- Tomas Maldocena"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#E0E0E0"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/inria_sans"
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:text="- Emilia Sosa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#E0E0E0"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/inria_sans"
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:text="- Franco Guarachi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#E0E0E0"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/inria_sans"
+                    android:layout_marginTop="4dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button"
+                    android:layout_width="211dp"
+                    android:layout_height="wrap_content"
+                    android:text="Volver"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center_horizontal"
+                    app:cornerRadius="10dp"
+                    app:backgroundTint="#3E3A72"
+                    android:textColor="#FFFFFF"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>
