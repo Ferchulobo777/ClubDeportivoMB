@@ -1,63 +1,149 @@
 package com.example.clubdeportivomb
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.ArrayAdapter
-import android.widget.AdapterView
-import androidx.activity.enableEdgeToEdge
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.clubdeportivomb.repository.ClubDeportivoRepository
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import java.util.Calendar
 
 class RegistroUsuarioActivity : AppCompatActivity() {
+
+    private lateinit var repository: ClubDeportivoRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_registro_usuario)
 
-        // Ajuste de márgenes para status/navigation bar
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_registro_usuario)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        // === Inicializar Repositorio (maneja la BD)
+        repository = ClubDeportivoRepository(this)
 
-        // Edge-to-edge
-        window.decorView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                )
-
-        // ===== Botón volver =====
-        val iconBack = findViewById<ImageView>(R.id.iconBack)
-        iconBack.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
-        // ===== Footer Inicia sesión =====
-        val tvIniciaSesion = findViewById<TextView>(R.id.tvIniciaSesion)
-        tvIniciaSesion.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
-        // ===== Área (MaterialAutoCompleteTextView) =====
+        // === Referencias a los campos del formulario ===
+        val etNombre = findViewById<EditText>(R.id.etNombre)
+        val etApellido = findViewById<EditText>(R.id.etApellido)
+        val etFechaNacimiento = findViewById<EditText>(R.id.etFechaNacimiento)
+        val etDni = findViewById<EditText>(R.id.etDni)
+        val etTelefono = findViewById<EditText>(R.id.etTelefono)
+        val etEmail = findViewById<EditText>(R.id.etEmail)
+        val etDireccion = findViewById<EditText>(R.id.etDireccion)
+        val etFechaInscripcion = findViewById<EditText>(R.id.etFechaInscripcion)
+        val etUsuario = findViewById<EditText>(R.id.etUsuario)
+        val etContrasena = findViewById<EditText>(R.id.etContrasena)
+        val etConfirmarContrasena = findViewById<EditText>(R.id.etConfirmarContrasena)
         val autoCompleteArea = findViewById<MaterialAutoCompleteTextView>(R.id.autoCompleteArea)
+
+        val btnRegistrar = findViewById<Button>(R.id.btnRegistrar)
+        val btnCancelar = findViewById<Button>(R.id.btnCancelar)
+        val tvIniciaSesion = findViewById<TextView>(R.id.tvIniciaSesion)
+        val iconBack = findViewById<ImageView>(R.id.iconBack)
+
+        // === Poblamos las áreas (dropdown)
         val areas = resources.getStringArray(R.array.areas_array)
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, areas)
         autoCompleteArea.setAdapter(adapter)
 
-        autoCompleteArea.setOnItemClickListener { parent, _, position, _ ->
-            val selectedArea = parent.getItemAtPosition(position).toString()
-            // Guardar o usar la selección
+        // === Botones de navegación ===
+        btnCancelar.setOnClickListener {
+            finish() // simplemente cierra el activity
+        }
+
+        tvIniciaSesion.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+
+        iconBack.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+
+        // === DatePickers para fechas ===
+        val calendar = Calendar.getInstance()
+
+        etFechaNacimiento.setOnClickListener {
+            DatePickerDialog(
+                this,
+                { _, year, month, day ->
+                    etFechaNacimiento.setText("$day/${month + 1}/$year")
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+        etFechaInscripcion.setOnClickListener {
+            DatePickerDialog(
+                this,
+                { _, year, month, day ->
+                    etFechaInscripcion.setText("$day/${month + 1}/$year")
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+        // === Lógica de registro ===
+        btnRegistrar.setOnClickListener {
+            val nombre = etNombre.text.toString().trim()
+            val apellido = etApellido.text.toString().trim()
+            val fechaNacimiento = etFechaNacimiento.text.toString().trim()
+            val dni = etDni.text.toString().trim()
+            val telefono = etTelefono.text.toString().trim()
+            val direccion = etDireccion.text.toString().trim()
+            val usuario = etUsuario.text.toString().trim()
+            val contrasena = etContrasena.text.toString().trim()
+            val confirmarContrasena = etConfirmarContrasena.text.toString().trim()
+            val area = autoCompleteArea.text.toString().trim()
+
+            if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() ||
+                usuario.isEmpty() || contrasena.isEmpty() || confirmarContrasena.isEmpty()) {
+                Toast.makeText(this, "Complete todos los campos obligatorios", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (contrasena != confirmarContrasena) {
+                Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // 1️⃣ Insertar persona
+            val personaId = repository.insertarPersona(
+                nombre = nombre,
+                apellido = apellido,
+                dni = dni,
+                fechaNacimiento = fechaNacimiento,
+                telefono = telefono,
+                direccion = direccion
+            )
+
+            if (personaId == -1L) {
+                Toast.makeText(this, "Error al registrar persona", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // 2️⃣ Insertar usuario
+            val passwordHash = contrasena.hashCode().toString() // ejemplo simple
+            val usuarioId = repository.insertarUsuario(
+                username = usuario,
+                passwordHash = passwordHash,
+                rol = area, // acá podés usar el área o un rol fijo
+                personaId = personaId
+            )
+
+            if (usuarioId == -1L) {
+                Toast.makeText(this, "Error al crear usuario", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            Toast.makeText(this, "Usuario registrado correctamente ✅", Toast.LENGTH_LONG).show()
+
+            // Redirige al login
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
     }
 }
