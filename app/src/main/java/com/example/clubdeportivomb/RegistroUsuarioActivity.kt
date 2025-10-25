@@ -94,6 +94,8 @@ class RegistroUsuarioActivity : AppCompatActivity() {
             val dni = etDni.text.toString().trim()
             val telefono = etTelefono.text.toString().trim()
             val direccion = etDireccion.text.toString().trim()
+            val email = etEmail.text.toString().trim()
+            val fechaAlta = etFechaInscripcion.text.toString().trim()
             val usuario = etUsuario.text.toString().trim()
             val contrasena = etContrasena.text.toString().trim()
             val confirmarContrasena = etConfirmarContrasena.text.toString().trim()
@@ -117,7 +119,9 @@ class RegistroUsuarioActivity : AppCompatActivity() {
                 dni = dni,
                 fechaNacimiento = fechaNacimiento,
                 telefono = telefono,
-                direccion = direccion
+                direccion = direccion,
+                email = email,
+                fechaAlta = fechaAlta
             )
 
             if (personaId == -1L) {

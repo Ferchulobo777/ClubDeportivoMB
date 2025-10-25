@@ -7,5 +7,7 @@ data class Persona(
     val dni: String,
     val fechaNacimiento: String,
     val telefono: String,
-    val direccion: String
+    val direccion: String,
+    val email: String,
+    val fechaAlta: String
 )

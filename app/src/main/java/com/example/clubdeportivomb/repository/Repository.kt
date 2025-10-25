@@ -4,7 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import com.example.clubdeportivomb.db.ClubDeportivoDBHelper
-
+import com.example.clubdeportivomb.mapper.CursorMapper
+import com.example.clubdeportivomb.model.Usuario
 
 class ClubDeportivoRepository(context: Context) {
 
@@ -13,7 +14,7 @@ class ClubDeportivoRepository(context: Context) {
     // ----------------------------
     // PERSONAS
     // ----------------------------
-    fun insertarPersona(nombre: String, apellido: String, dni: String, fechaNacimiento: String?, telefono: String?, direccion: String?): Long {
+    fun insertarPersona(nombre: String, apellido: String, dni: String, fechaNacimiento: String?, telefono: String?, direccion: String?, email: String?, fechaAlta: String?): Long {
         val db = dbHelper.writableDatabase
         val values = ContentValues().apply {
             put("nombre", nombre)
@@ -22,6 +23,8 @@ class ClubDeportivoRepository(context: Context) {
             put("fecha_nacimiento", fechaNacimiento)
             put("telefono", telefono)
             put("direccion", direccion)
+            put("email", email)
+            put("fecha_alta", fechaAlta)
         }
         return db.insert("personas", null, values)
     }
@@ -31,13 +34,14 @@ class ClubDeportivoRepository(context: Context) {
         return db.query("personas", null, "id = ?", arrayOf(id.toString()), null, null, null)
     }
 
-    fun actualizarPersona(id: Long, nombre: String, apellido: String, telefono: String?, direccion: String?): Int {
+    fun actualizarPersona(id: Long, nombre: String, apellido: String, telefono: String?, direccion: String?, email: String?): Int {
         val db = dbHelper.writableDatabase
         val values = ContentValues().apply {
             put("nombre", nombre)
             put("apellido", apellido)
             put("telefono", telefono)
             put("direccion", direccion)
+            put("email", email)
         }
         return db.update("personas", values, "id = ?", arrayOf(id.toString()))
     }
@@ -64,6 +68,48 @@ class ClubDeportivoRepository(context: Context) {
     fun obtenerUsuarios(): Cursor {
         return dbHelper.readableDatabase.query("usuarios", null, null, null, null, null, null)
     }
+
+    fun obtenerUsuario(username: String, passwordHash: String): Usuario? {
+        val db = dbHelper.readableDatabase
+        val cursor = db.query(
+            "usuarios",
+            arrayOf("id", "username", "rol", "persona_id"),
+            "username = ? AND password_hash = ?",
+            arrayOf(username, passwordHash),
+            null,
+            null,
+            null
+        )
+
+        if (cursor.moveToFirst()) {
+            val id = cursor.getLong(cursor.getColumnIndexOrThrow("id"))
+            val rol = cursor.getString(cursor.getColumnIndexOrThrow("rol"))
+            val personaId = cursor.getLong(cursor.getColumnIndexOrThrow("persona_id"))
+
+            // Obtener el nombre de la persona
+            var nombre = ""
+            val personaCursor = db.query(
+                "personas",
+                arrayOf("nombre"),
+                "id = ?",
+                arrayOf(personaId.toString()),
+                null,
+                null,
+                null
+            )
+            if (personaCursor.moveToFirst()) {
+                nombre = personaCursor.getString(personaCursor.getColumnIndexOrThrow("nombre"))
+            }
+            personaCursor.close()
+            cursor.close()
+
+            return Usuario(id, username, rol, personaId, nombre)
+        }
+
+        cursor.close()
+        return null
+    }
+
 
     fun actualizarUsuario(id: Long, username: String, rol: String): Int {
         val values = ContentValues().apply {

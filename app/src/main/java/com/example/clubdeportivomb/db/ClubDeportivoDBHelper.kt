@@ -15,7 +15,7 @@ class ClubDeportivoDBHelper(context: Context) : SQLiteOpenHelper(
 
     companion object {
         private const val DATABASE_NAME = "club_deportivo.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 3
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -32,7 +32,9 @@ class ClubDeportivoDBHelper(context: Context) : SQLiteOpenHelper(
                 dni TEXT NOT NULL UNIQUE,
                 fecha_nacimiento TEXT,
                 telefono TEXT,
-                direccion TEXT
+                direccion TEXT,
+                email TEXT,
+                fecha_alta TEXT
             )
         """)
 

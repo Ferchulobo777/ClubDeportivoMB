@@ -13,7 +13,9 @@ object CursorMapper {
             dni = cursor.getString(cursor.getColumnIndexOrThrow("dni")),
             fechaNacimiento = cursor.getString(cursor.getColumnIndexOrThrow("fecha_nacimiento")),
             telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono")),
-            direccion = cursor.getString(cursor.getColumnIndexOrThrow("direccion"))
+            direccion = cursor.getString(cursor.getColumnIndexOrThrow("direccion")),
+            email = cursor.getString(cursor.getColumnIndexOrThrow("email")),
+            fechaAlta = cursor.getString(cursor.getColumnIndexOrThrow("fecha_alta"))
         )
     }
 
