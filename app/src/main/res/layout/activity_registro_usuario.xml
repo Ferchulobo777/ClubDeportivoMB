@@ -7,14 +7,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#1D1B41"
-    android:padding="40dp"
+    android:padding="12dp"
     tools:context=".RegistroUsuarioActivity">
 
     <!-- ===== ENCABEZADO ===== -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="8dp">
+        android:paddingVertical="4dp">
 
         <TextView
             android:id="@+id/tvUsuario"
