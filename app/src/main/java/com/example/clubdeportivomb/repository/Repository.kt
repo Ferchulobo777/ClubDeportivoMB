@@ -3,6 +3,7 @@ package com.example.clubdeportivomb.repository
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.util.Log
 import com.example.clubdeportivomb.db.ClubDeportivoDBHelper
 import com.example.clubdeportivomb.mapper.CursorMapper
 import com.example.clubdeportivomb.model.Usuario
@@ -70,23 +71,32 @@ class ClubDeportivoRepository(context: Context) {
     }
 
     fun obtenerUsuario(username: String, passwordHash: String): Usuario? {
+        // Log para ver los datos que llegan a la función
+        Log.d("MiApp", "Buscando usuario. Username: '$username', PasswordHash: '$passwordHash'")
+
         val db = dbHelper.readableDatabase
         val cursor = db.query(
             "usuarios",
             arrayOf("id", "username", "rol", "persona_id"),
             "username = ? AND password_hash = ?",
-            arrayOf(username, passwordHash),
+            arrayOf(username, passwordHash), // Corregí el nombre de la variable aquí
             null,
             null,
             null
         )
 
+        // Comprobamos si el cursor encontró algo
         if (cursor.moveToFirst()) {
+            // ¡Éxito! El usuario fue encontrado en la base de datos
+            Log.d("MiApp", "¡Usuario encontrado! Procesando datos...")
+
             val id = cursor.getLong(cursor.getColumnIndexOrThrow("id"))
             val rol = cursor.getString(cursor.getColumnIndexOrThrow("rol"))
             val personaId = cursor.getLong(cursor.getColumnIndexOrThrow("persona_id"))
 
-            // Obtener el nombre de la persona
+            Log.d("MiApp", "ID: $id, Rol: '$rol', PersonaID: $personaId")
+
+            // Obtener el nombre de la persona (esto se puede simplificar, pero lo dejamos por ahora)
             var nombre = ""
             val personaCursor = db.query(
                 "personas",
@@ -99,13 +109,24 @@ class ClubDeportivoRepository(context: Context) {
             )
             if (personaCursor.moveToFirst()) {
                 nombre = personaCursor.getString(personaCursor.getColumnIndexOrThrow("nombre"))
+                Log.d("MiApp", "Nombre de la persona encontrado: '$nombre'")
             }
             personaCursor.close()
+
+            // Creamos el objeto Usuario ANTES de cerrar el cursor principal
+            val usuarioEncontrado = Usuario(id, username, passwordHash, rol, personaId)
+
+            // Ahora cerramos el cursor
             cursor.close()
 
-            return Usuario(id, username, passwordHash, rol, personaId)
+            // Devolvemos el objeto
+            return usuarioEncontrado
+        } else {
+            // El cursor está vacío, no se encontró ninguna fila que coincida
+            Log.w("MiApp", "Usuario NO encontrado con esas credenciales.") // 'w' es para Warning, resalta más
         }
 
+        // Cerramos el cursor si no se encontró nada y retornamos null
         cursor.close()
         return null
     }

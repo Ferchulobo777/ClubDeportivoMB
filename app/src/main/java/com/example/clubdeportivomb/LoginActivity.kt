@@ -58,7 +58,8 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val passwordHash = sha256(password)
+            //val passwordHash = sha256(password)
+            val passwordHash = password.hashCode().toString()
             val usuario: Usuario? = repository.obtenerUsuario(username, passwordHash)
 
             if (usuario != null) {

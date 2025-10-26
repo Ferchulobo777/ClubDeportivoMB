@@ -34,7 +34,8 @@
         <activity android:name=".TipoClienteAgregarClienteActivity" android:exported="false" />
         <activity android:name=".ClienteActivity" android:exported="false" android:theme="@style/Theme.ClubDeportivoMB" />
         <activity android:name=".modal_acerca_de" android:exported="false" android:theme="@style/Theme.ClubDeportivoMB" />
-        <activity android:name=".HomeActivity" android:exported="false" />
+        <activity android:name=".HomeActivity" android:exported="false"
+            android:theme="@style/Theme.Material3.DayNight.NoActionBar" />
         <activity android:name=".pantalla_base" android:exported="false" />
         <activity android:name=".personal_menu" android:exported="false" />
         <activity android:name=".Registrousuario" android:exported="false" />
