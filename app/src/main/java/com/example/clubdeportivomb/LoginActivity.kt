@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
             if (usuario != null) {
                 when (usuario.rol) {
                     "Administración", "Profesores", "Nutricionistas" -> {
-                        openHome(usuario.nombre, usuario.rol)
+                        openHome(usuario.username, usuario.rol)
                     }
                     else -> Toast.makeText(this, "Rol no reconocido", Toast.LENGTH_SHORT).show()
                 }

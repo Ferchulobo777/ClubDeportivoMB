@@ -6,4 +6,5 @@ data class Usuario(
     val passwordHash: String,
     val rol: String,
     val personaId: Long
+
 )

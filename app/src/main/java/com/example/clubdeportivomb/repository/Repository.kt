@@ -103,7 +103,7 @@ class ClubDeportivoRepository(context: Context) {
             personaCursor.close()
             cursor.close()
 
-            return Usuario(id, username, rol, personaId, nombre)
+            return Usuario(id, username, passwordHash, rol, personaId)
         }
 
         cursor.close()
