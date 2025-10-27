@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.clubdeportivomb.databinding.ActivityClienteBinding
 import android.widget.Toast
+import androidx.activity.addCallback
 
 class ClienteActivity : AppCompatActivity() {
 
@@ -44,6 +45,12 @@ class ClienteActivity : AppCompatActivity() {
         binding.tvAyuda.setOnClickListener {
             Toast.makeText(this, "Necesitas ayuda?", Toast.LENGTH_SHORT).show()
             // Podés abrir un diálogo o Activity de ayuda
+        }
+
+        onBackPressedDispatcher.addCallback(this) {
+            // Esta acción se ejecutará cuando se presione el botón de atrás.
+            // finish() destruye la actividad actual y vuelve a la anterior en la pila.
+            finish()
         }
     }
 }

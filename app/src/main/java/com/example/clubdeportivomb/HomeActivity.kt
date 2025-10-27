@@ -1,9 +1,11 @@
 package com.example.clubdeportivomb
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -31,6 +33,10 @@ class HomeActivity : AppCompatActivity() {
         val tvSaludo = findViewById<TextView>(R.id.title_saludo_menu)
         tvSaludo.text = "Bienvenido/a $nombreUsuario!!"
 
+        // Mostrar nombre en el header
+        val tvUser = findViewById<TextView>(R.id.tvUsuario)
+        tvUser.text = nombreUsuario
+
         // Botones del menú
         val btnClientes = findViewById<MaterialButton>(R.id.btnClientes)
         val btnPersonal = findViewById<MaterialButton>(R.id.btnPersonal)
@@ -44,10 +50,48 @@ class HomeActivity : AppCompatActivity() {
         }
 
         // Listeners de botones (puedes cambiar para abrir tus pantallas)
-        btnClientes.setOnClickListener { /* Abrir pantalla clientes */ }
-        btnPersonal.setOnClickListener { /* Abrir pantalla personal */ }
-        btnActividades.setOnClickListener { /* Abrir pantalla actividades */ }
-        btnTurnos.setOnClickListener { /* Abrir pantalla turnos */ }
-        btnAcercaDe.setOnClickListener { /* Abrir pantalla acerca de */ }
+        btnClientes.setOnClickListener { /* Abrir pantalla clientes */
+            val intent = Intent(this, ClienteActivity::class.java)
+            intent.putExtra("NOMBRE_USUARIO", nombreUsuario)
+            intent.putExtra("ROL_USUARIO", rolUsuario)
+            startActivity(intent)
+        }
+        btnPersonal.setOnClickListener { /* Abrir pantalla personal */
+            val intent = Intent(this, PersonalActivity::class.java)
+            intent.putExtra("NOMBRE_USUARIO", nombreUsuario)
+            intent.putExtra("ROL_USUARIO", rolUsuario)
+            startActivity(intent)
+        }
+        btnActividades.setOnClickListener { /* Abrir pantalla actividades */
+            val intent = Intent(this, ActividadesActivity::class.java)
+            intent.putExtra("NOMBRE_USUARIO", nombreUsuario)
+            intent.putExtra("ROL_USUARIO", rolUsuario)
+            startActivity(intent)
+        }
+        btnTurnos.setOnClickListener { /* Abrir pantalla turnos */
+            val intent = Intent(this, TurnosActivity::class.java)
+            intent.putExtra("NOMBRE_USUARIO", nombreUsuario)
+            intent.putExtra("ROL_USUARIO", rolUsuario)
+            startActivity(intent)
+        }
+        btnAcercaDe.setOnClickListener { /* Abrir pantalla acerca de */
+            AlertDialog.Builder(this).apply {
+                setTitle("Acerca De")
+                setMessage("Desarrollo de Aplicaciones para Dispositivos Moviles\n" +
+                        "Proyecto creado por:\n" +
+                        "\n" +
+                        "Fernando Rodriguez\n" +
+                        "Vanesa Aracena\n" +
+                        "Emilia Sosa\n" +
+                        "Franco Guarachi\n" +
+                        "Tomás Maldocena")
+                setPositiveButton("Cerrar") { dialog, _ ->
+                    dialog.dismiss()
+                    super.onBackPressed()
+                }
+                create()
+                show()
+            }
+        }
     }
 }
