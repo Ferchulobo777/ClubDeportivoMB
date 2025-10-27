@@ -103,12 +103,13 @@ class ClubDeportivoRepository(context: Context) {
             personaCursor.close()
             cursor.close()
 
-            return Usuario(id, username, passwordHash, rol, personaId )
-        } else {
-            cursor.close()
-            return null
+            return Usuario(id, username, passwordHash, rol, personaId)
         }
+
+        cursor.close()
+        return null
     }
+
 
     fun actualizarUsuario(id: Long, username: String, rol: String): Int {
         val values = ContentValues().apply {
