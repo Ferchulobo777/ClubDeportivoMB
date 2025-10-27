@@ -38,7 +38,7 @@
             android:layout_toEndOf="@+id/imgUsuario"
             android:layout_marginStart="12dp"
             android:gravity="center_vertical"
-            android:text="Usuario"
+            android:text="[User]"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold"
