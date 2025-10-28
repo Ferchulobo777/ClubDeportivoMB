@@ -18,7 +18,6 @@ class ClienteActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val iconBack = findViewById<ImageView>(R.id.iconBack)
-
         iconBack.setOnClickListener {
             finish() // cierra esta Activity y vuelve a la anterior
         }
@@ -26,20 +25,22 @@ class ClienteActivity : AppCompatActivity() {
         // Listener para "Añadir Nuevo Cliente"
         binding.btnAgregarNuevoCliente.setOnClickListener {
             Toast.makeText(this, "Añadir Nuevo Cliente", Toast.LENGTH_SHORT).show()
-            // Aquí podés abrir otra Activity
-            // startActivity(Intent(this, RegistroClienteActivity::class.java))
+            val intent = Intent(this, TipoClienteAgregarClienteActivity::class.java)
+            startActivity(intent)
         }
 
         // Listener para "Modificar Cliente"
         binding.btnModificarCliente.setOnClickListener {
             Toast.makeText(this, "Modificar Cliente", Toast.LENGTH_SHORT).show()
-            // startActivity(Intent(this, ModificarClienteActivity::class.java))
+            val intent = Intent(this, TipoClienteModificarCliente::class.java)
+            startActivity(intent)
         }
 
         // Listener para "Buscar Cliente"
         binding.btnBuscarCliente.setOnClickListener {
             Toast.makeText(this, "Buscar Cliente", Toast.LENGTH_SHORT).show()
-            // startActivity(Intent(this, BuscarClienteActivity::class.java))
+            val intent = Intent(this,  ClienteBuscarCliente::class.java)
+            startActivity(intent)
         }
 
         // Listener para "Control de Acceso"
