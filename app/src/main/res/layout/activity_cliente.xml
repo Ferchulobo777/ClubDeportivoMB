@@ -147,7 +147,7 @@
 
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnModificarCliente"
+                    android:id="@+id/btnVencimientosCliente"
                     style="@style/Widget.Material3.Button.ElevatedButton"
                     android:layout_width="0dp"
                     android:layout_height="140dp"
@@ -155,7 +155,7 @@
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginVertical="6dp"
                     android:layout_marginTop="18dp"
-                    android:text="Modificar Cliente"
+                    android:text="Proximos Vencimientos"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
                     android:fontFamily="@font/inria_sans"
