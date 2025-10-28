@@ -17,6 +17,7 @@ import com.example.clubdeportivomb.model.Usuario
 import java.security.MessageDigest
 import androidx.activity.addCallback
 
+
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var repository: ClubDeportivoRepository
@@ -34,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
         controller.hide(WindowInsetsCompat.Type.systemBars())
         controller.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
 
 
         // Referencias
@@ -93,6 +95,7 @@ class LoginActivity : AppCompatActivity() {
                 }
                 show()
             }
+
         }
     }
 

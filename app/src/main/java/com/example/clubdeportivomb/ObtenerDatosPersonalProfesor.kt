@@ -5,6 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import android.widget.ImageView
 
 class ObtenerDatosPersonalProfesor : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,5 +17,11 @@ class ObtenerDatosPersonalProfesor : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val iconBack = findViewById<ImageView>(R.id.iconBack)
+
+        iconBack.setOnClickListener {
+            finish() // cierra esta Activity y vuelve a la anterior
+        }
+
     }
 }

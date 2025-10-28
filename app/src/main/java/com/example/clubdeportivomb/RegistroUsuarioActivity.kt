@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.clubdeportivomb.repository.ClubDeportivoRepository
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import java.util.Calendar
+import android.widget.ImageView
 
 
 class RegistroUsuarioActivity : AppCompatActivity() {
@@ -44,6 +45,9 @@ class RegistroUsuarioActivity : AppCompatActivity() {
         val areas = resources.getStringArray(R.array.areas_array)
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, areas)
         autoCompleteArea.setAdapter(adapter)
+
+
+
 
         // === Botones de navegación ===
         btnCancelar.setOnClickListener {

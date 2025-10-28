@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.clubdeportivomb.databinding.ActivityClienteBinding
 import android.widget.Toast
 import androidx.activity.addCallback
+import android.widget.ImageView
 
 class ClienteActivity : AppCompatActivity() {
 
@@ -15,6 +16,12 @@ class ClienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityClienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val iconBack = findViewById<ImageView>(R.id.iconBack)
+
+        iconBack.setOnClickListener {
+            finish() // cierra esta Activity y vuelve a la anterior
+        }
 
         // Listener para "Añadir Nuevo Cliente"
         binding.btnAgregarNuevoCliente.setOnClickListener {

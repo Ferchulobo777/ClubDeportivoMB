@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
+import android.widget.ImageView
+
 
 class HomeActivity : AppCompatActivity() {
 
@@ -24,6 +26,14 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val iconBack = findViewById<ImageView>(R.id.iconBack)
+
+        iconBack.setOnClickListener {
+            finish() // cierra esta Activity y vuelve a la anterior
+        }
+
+
 
         // Obtener datos del usuario pasados desde LoginActivity
         val nombreUsuario = intent.getStringExtra("NOMBRE_USUARIO") ?: "Usuario"
