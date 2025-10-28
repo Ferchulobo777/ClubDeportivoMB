@@ -37,7 +37,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/chevron_backward_24"
-            android:tint="#FFFFFF" />
+            app:tint="#FFFFFF" />
     </RelativeLayout>
 
     <!-- ===== TÍTULO ===== -->

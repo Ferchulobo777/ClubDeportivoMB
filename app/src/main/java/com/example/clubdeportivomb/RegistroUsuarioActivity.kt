@@ -9,6 +9,7 @@ import com.example.clubdeportivomb.repository.ClubDeportivoRepository
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import java.util.Calendar
 
+
 class RegistroUsuarioActivity : AppCompatActivity() {
 
     private lateinit var repository: ClubDeportivoRepository
@@ -101,11 +102,16 @@ class RegistroUsuarioActivity : AppCompatActivity() {
             val confirmarContrasena = etConfirmarContrasena.text.toString().trim()
             val area = autoCompleteArea.text.toString().trim()
 
+
+
             if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() ||
                 usuario.isEmpty() || contrasena.isEmpty() || confirmarContrasena.isEmpty()) {
                 Toast.makeText(this, "Complete todos los campos obligatorios", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+
+
 
             if (contrasena != confirmarContrasena) {
                 Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
