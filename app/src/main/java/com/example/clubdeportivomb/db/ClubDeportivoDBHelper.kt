@@ -1,17 +1,13 @@
 package com.example.clubdeportivomb.db
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 
-
-
-class ClubDeportivoDBHelper(context: Context) : SQLiteOpenHelper(
-    context,
-    DATABASE_NAME,
-    null,
-    DATABASE_VERSION
-) {
+class ClubDeportivoDBHelper(context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "club_deportivo.db"
@@ -19,9 +15,7 @@ class ClubDeportivoDBHelper(context: Context) : SQLiteOpenHelper(
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL("""
-            PRAGMA foreign_keys = ON;
-        """)
+        db.execSQL("PRAGMA foreign_keys = ON;")
 
         // Personas
         db.execSQL("""
@@ -217,10 +211,12 @@ class ClubDeportivoDBHelper(context: Context) : SQLiteOpenHelper(
                 fecha_pago TEXT
             )
         """)
+
+        // 🔹 Insertar datos dummy para pruebas
+        insertarDatosDummy(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Por simplicidad eliminamos todas las tablas y volvemos a crear
         db.execSQL("DROP TABLE IF EXISTS pagos")
         db.execSQL("DROP TABLE IF EXISTS turnos_nutricionista")
         db.execSQL("DROP TABLE IF EXISTS cuotas")
@@ -237,5 +233,128 @@ class ClubDeportivoDBHelper(context: Context) : SQLiteOpenHelper(
         db.execSQL("DROP TABLE IF EXISTS usuarios")
         db.execSQL("DROP TABLE IF EXISTS personas")
         onCreate(db)
+    }
+
+    // ----------------------------------------------------
+    // Datos Dummy
+    // ----------------------------------------------------
+    private fun insertarDatosDummy(db: SQLiteDatabase) {
+        try {
+            val nombres = listOf("Juan", "María", "Carlos", "Lucía", "Pedro", "Laura", "José", "Ana", "Diego", "Sofía")
+            val apellidos = listOf("Pérez", "Gómez", "López", "Fernández", "Ruiz", "Torres", "Silva", "Molina", "Acosta", "Herrera")
+
+            val personaIds = mutableListOf<Long>()
+
+            // PERSONAS
+            for (i in 0 until 10) {
+                val cv = ContentValues().apply {
+                    put("nombre", nombres[i])
+                    put("apellido", apellidos[i])
+                    put("dni", "40000${100 + i}")
+                    put("fecha_nacimiento", "199${i}-05-10")
+                    put("telefono", "26140000${i}")
+                    put("direccion", "Calle Falsa ${i * 10}")
+                    put("email", "${nombres[i].lowercase()}@mail.com")
+                    put("fecha_alta", "2025-01-01")
+                }
+                personaIds.add(db.insert("personas", null, cv))
+            }
+
+            // SOCIOS
+            val socioIds = mutableListOf<Long>()
+            for (i in 0 until 10) {
+                val cv = ContentValues().apply {
+                    put("persona_id", personaIds[i])
+                    put("fecha_alta", "2025-02-01")
+                    put("estado", 1)
+                    put("certificado", "CertSocio-${100 + i}")
+                }
+                socioIds.add(db.insert("socios", null, cv))
+            }
+
+            // NO SOCIOS
+            val noSocioIds = mutableListOf<Long>()
+            for (i in 0 until 10) {
+                val cv = ContentValues().apply {
+                    put("persona_id", personaIds[i])
+                    put("certificado", "CertNoSocio-${200 + i}")
+                    put("fecha_alta", "2025-02-05")
+                }
+                noSocioIds.add(db.insert("no_socios", null, cv))
+            }
+
+            // PROFESORES
+            val profesorIds = mutableListOf<Long>()
+            val especialidades = listOf("Spinning", "Yoga", "Crossfit", "Pilates", "Zumba", "Natación", "Boxeo", "Funcional", "GAP", "HIIT")
+            for (i in 0 until 10) {
+                val cv = ContentValues().apply {
+                    put("persona_id", personaIds[i])
+                    put("especialidad", especialidades[i])
+                    put("fecha_alta", "2025-01-10")
+                    put("sueldo", 50000 + (i * 1500))
+                }
+                profesorIds.add(db.insert("profesores", null, cv))
+            }
+
+            // NUTRICIONISTAS
+            val nutricionistaIds = mutableListOf<Long>()
+            for (i in 0 until 10) {
+                val cv = ContentValues().apply {
+                    put("persona_id", personaIds[i])
+                    put("fecha_alta", "2025-01-15")
+                    put("matricula", "MAT-${300 + i}")
+                }
+                nutricionistaIds.add(db.insert("nutricionistas", null, cv))
+            }
+
+            // ACTIVIDADES
+            val dias = listOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes")
+            val horas = listOf("18:00", "19:00", "20:00", "21:00")
+            val salones = listOf("AZUL", "VERDE", "ROJO", "AMARILLO", "VIOLETA", "NARANJA", "NEGRO", "GRIS", "BLANCO", "CELESTE")
+
+            val actividadIds = mutableListOf<Long>()
+            for (i in 0 until 10) {
+                val cv = ContentValues().apply {
+                    put("nombre", "Actividad ${i + 1}")
+                    put("descripcion", "Entrenamiento ${especialidades[i]} nivel ${i + 1}")
+                    put("cupo_maximo", 20 + i)
+                    put("dia", dias[i % dias.size])
+                    put("hora", horas[i % horas.size])
+                    put("salon", salones[i % salones.size])
+                    put("profesor_id", profesorIds[i % profesorIds.size])
+                }
+                actividadIds.add(db.insert("actividades", null, cv))
+            }
+
+            // PARTICIPANTES
+            for (i in 0 until 10) {
+                val cvSocio = ContentValues().apply {
+                    put("actividad_id", actividadIds[i])
+                    put("persona_id", personaIds[i])
+                    put("tipo_afiliado", if (i % 2 == 0) "SOCIO" else "NO SOCIO")
+                    put("fecha_inscripcion", "2025-03-${10 + i}")
+                }
+                db.insert("actividad_participantes", null, cvSocio)
+            }
+
+            // PAGOS
+            for (i in 0 until 10) {
+                val cv = ContentValues().apply {
+                    put("dni_cliente", "40000${100 + i}")
+                    put("tipo_pago", "Cuota")
+                    put("importe", 5000 + i * 100)
+                    put("motivo", "Pago cuota mensual")
+                    put("medio_pago", if (i % 2 == 0) "Efectivo" else "Tarjeta")
+                    put("cuotas", "1")
+                    put("fecha_pago", "2025-03-${10 + i}")
+                }
+                db.insert("pagos", null, cv)
+            }
+
+            Log.d("DBHelper", "✅ Datos dummy insertados correctamente")
+
+        } catch (e: Exception) {
+            Log.e("DBHelper", "❌ Error insertando datos dummy", e)
+        }
     }
 }
