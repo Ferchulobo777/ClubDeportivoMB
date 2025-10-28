@@ -11,50 +11,101 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ClubDeportivoMB">
-
+        <activity
+            android:name=".VencimientosActivity"
+            android:exported="false" />
         <!-- Actividades existentes -->
-        <activity android:name=".ObtenerDatosPersonalNutricionista" android:exported="false" />
-        <activity android:name=".ObtenerDatosPersonalProfesor" android:exported="false" />
-        <activity android:name=".ObtenerDatosClienteNoSocio" android:exported="false" />
-        <activity android:name=".ObtenerDatosClienteSocio" android:exported="false" />
-        <activity android:name=".TurnosActivity" android:exported="false" />
-        <activity android:name=".ActividadesActivity" android:exported="false" />
-        <activity android:name=".ModificarPersonalProfesorFormulario" android:exported="false" />
-        <activity android:name=".ModificarClienteNoSocioFormulario" android:exported="false" />
-        <activity android:name=".ModificarClienteSocioFormulario" android:exported="false" />
-        <activity android:name=".TipoPersonalModificarPersonalActivity" android:exported="false" />
-        <activity android:name=".PersonalBuscarPersonal" android:exported="false" />
-        <activity android:name=".TipoPersonalAgregarPersonalActivity" android:exported="false" />
-        <activity android:name=".PersonalActivity" android:exported="false" />
-        <activity android:name=".ClienteBuscarClienteResultado" android:exported="false" />
-        <activity android:name=".ClienteBuscarCliente" android:exported="false" />
-        <activity android:name=".RegistroClienteNoSocio" android:exported="false" />
-        <activity android:name=".RegistroClienteSocio" android:exported="false" />
-        <activity android:name=".RegistroUsuarioActivity" android:exported="false" />
-        <activity android:name=".TipoClienteAgregarClienteActivity" android:exported="false" />
-        <activity android:name=".ClienteActivity" android:exported="false" android:theme="@style/Theme.ClubDeportivoMB" />
-        <activity android:name=".modal_acerca_de" android:exported="false" android:theme="@style/Theme.ClubDeportivoMB" />
-        <activity android:name=".HomeActivity" android:exported="false"
+        <activity
+            android:name=".ObtenerDatosPersonalNutricionista"
+            android:exported="false" />
+        <activity
+            android:name=".ObtenerDatosPersonalProfesor"
+            android:exported="false" />
+        <activity
+            android:name=".ObtenerDatosClienteNoSocio"
+            android:exported="false" />
+        <activity
+            android:name=".ObtenerDatosClienteSocio"
+            android:exported="false" />
+        <activity
+            android:name=".TurnosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActividadesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ModificarPersonalProfesorFormulario"
+            android:exported="false" />
+        <activity
+            android:name=".ModificarClienteNoSocioFormulario"
+            android:exported="false" />
+        <activity
+            android:name=".ModificarClienteSocioFormulario"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPersonalModificarPersonalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PersonalBuscarPersonal"
+            android:exported="false" />
+        <activity
+            android:name=".TipoPersonalAgregarPersonalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PersonalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteBuscarClienteResultado"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteBuscarCliente"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroClienteNoSocio"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroClienteSocio"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroUsuarioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TipoClienteAgregarClienteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClienteActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ClubDeportivoMB" />
+        <activity
+            android:name=".modal_acerca_de"
+            android:exported="false"
+            android:theme="@style/Theme.ClubDeportivoMB" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false"
             android:theme="@style/Theme.Material3.DayNight.NoActionBar" />
-        <activity android:name=".pantalla_base" android:exported="false" />
-        <activity android:name=".personal_menu" android:exported="false" />
-        <activity android:name=".Registrousuario" android:exported="false" />
-
-        <!-- Nueva actividad de Login -->
+        <activity
+            android:name=".pantalla_base"
+            android:exported="false" />
+        <activity
+            android:name=".personal_menu"
+            android:exported="false" />
+        <activity
+            android:name=".Registrousuario"
+            android:exported="false" /> <!-- Nueva actividad de Login -->
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.ClubDeportivoMB" />
-
-        <!-- Splash Activity -->
+            android:theme="@style/Theme.ClubDeportivoMB" /> <!-- Splash Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
+
 </manifest>

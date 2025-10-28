@@ -95,10 +95,7 @@ class HomeActivity : AppCompatActivity() {
                         "Emilia Sosa\n" +
                         "Franco Guarachi\n" +
                         "Tomás Maldocena")
-                setPositiveButton("Cerrar") { dialog, _ ->
-                    dialog.dismiss()
-                    super.onBackPressed()
-                }
+                setNegativeButton("Cerrar", null)
                 create()
                 show()
             }

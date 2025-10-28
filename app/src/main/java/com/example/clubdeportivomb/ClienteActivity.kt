@@ -30,10 +30,10 @@ class ClienteActivity : AppCompatActivity() {
             // startActivity(Intent(this, RegistroClienteActivity::class.java))
         }
 
-        // Listener para "Modificar Cliente"
-        binding.btnModificarCliente.setOnClickListener {
-            Toast.makeText(this, "Modificar Cliente", Toast.LENGTH_SHORT).show()
-            // startActivity(Intent(this, ModificarClienteActivity::class.java))
+        // Listener para "Ver Vencimientos"
+        binding.btnVencimientosCliente.setOnClickListener {
+            //Toast.makeText(this, "Proximos Vencimientos", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, VencimientosActivity::class.java))
         }
 
         // Listener para "Buscar Cliente"
