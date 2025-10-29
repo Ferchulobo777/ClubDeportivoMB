@@ -18,26 +18,29 @@ class ClienteActivity : AppCompatActivity() {
         // Listener para "Añadir Nuevo Cliente"
         binding.btnAgregarNuevoCliente.setOnClickListener {
             Toast.makeText(this, "Añadir Nuevo Cliente", Toast.LENGTH_SHORT).show()
-            // Aquí podés abrir otra Activity
-            // startActivity(Intent(this, RegistroClienteActivity::class.java))
+            val intent = Intent(this, TipoClienteAgregarClienteActivity::class.java)
+            startActivity(intent)
         }
 
-        // Listener para "Modificar Cliente"
-        binding.btnModificarCliente.setOnClickListener {
-            Toast.makeText(this, "Modificar Cliente", Toast.LENGTH_SHORT).show()
-            // startActivity(Intent(this, ModificarClienteActivity::class.java))
+        // Listener para "Vencimiento Cliente"
+        binding.btnVencimientosCliente.setOnClickListener {
+            Toast.makeText(this, "Vencimientos Clientes", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, VencimientosActivity::class.java)
+            startActivity(intent)
         }
 
         // Listener para "Buscar Cliente"
         binding.btnBuscarCliente.setOnClickListener {
             Toast.makeText(this, "Buscar Cliente", Toast.LENGTH_SHORT).show()
-            // startActivity(Intent(this, BuscarClienteActivity::class.java))
+            val intent = Intent(this, ClienteBuscarCliente::class.java)
+            startActivity(intent)
         }
 
         // Listener para "Control de Acceso"
         binding.btnControlAcceso.setOnClickListener {
             Toast.makeText(this, "Control de Acceso", Toast.LENGTH_SHORT).show()
-            // startActivity(Intent(this, ControlAccesoActivity::class.java))
+            val intent = Intent(this, ControlAcceso::class.java)
+            startActivity(intent)
         }
 
         // Listener para "¿Necesitas ayuda?"

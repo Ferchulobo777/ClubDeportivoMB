@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#1D1B41"
     android:padding="32dp"
-    tools:context=".FormSocioActivity">
+    tools:context=".RegistroClienteSocio">
 
     <!-- ===== ENCABEZADO ===== -->
     <RelativeLayout
@@ -45,7 +46,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/chevron_backward_24"
-            android:tint="#FFFFFF" />
+            app:tint="#FFFFFF" />
     </RelativeLayout>
 
     <!-- ===== TÍTULO ===== -->

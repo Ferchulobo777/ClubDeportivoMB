@@ -3,6 +3,12 @@ package com.example.clubdeportivomb.repository
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.example.clubdeportivomb.R
 import com.example.clubdeportivomb.db.ClubDeportivoDBHelper
 import com.example.clubdeportivomb.mapper.CursorMapper
 import com.example.clubdeportivomb.model.Usuario
@@ -436,3 +442,4 @@ class ClubDeportivoRepository(context: Context) {
         return dbHelper.readableDatabase.query("pagos", null, null, null, null, null, "fecha_pago DESC")
     }
 }
+
