@@ -8,10 +8,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import com.example.clubdeportivomb.repository.ClubDeportivoRepository
 import com.example.clubdeportivomb.model.Usuario
 import java.security.MessageDigest
@@ -28,15 +24,8 @@ class LoginActivity : AppCompatActivity() {
 
         repository = ClubDeportivoRepository(this)
 
-        // Configurar ventana completa
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        val controller = WindowInsetsControllerCompat(window, window.decorView)
-        controller.hide(WindowInsetsCompat.Type.systemBars())
-        controller.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-
-
+        // Configuración normal de ventana - CONTROLES VISIBLES
+        // Se eliminó el modo inmersivo que ocultaba los controles
 
         // Referencias
         val tvRegistro = findViewById<TextView>(R.id.tvRegistro)
@@ -47,13 +36,6 @@ class LoginActivity : AppCompatActivity() {
         // Redirigir al registro
         tvRegistro.setOnClickListener {
             startActivity(Intent(this, RegistroUsuarioActivity::class.java))
-        }
-
-        // Ajustar padding por barras del sistema
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_login)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
         }
 
         // Acción de login

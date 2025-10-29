@@ -10,7 +10,7 @@
     android:padding="18dp"
     tools:context=".MainActivity">
 
-    <!-- Encabezado con ícono de usuario -->
+    <!-- ===== ENCABEZADO ===== -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,6 +21,7 @@
             android:id="@+id/imgUsuario"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginStart="24dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:src="@drawable/person_24"
@@ -34,9 +35,9 @@
             android:id="@+id/tvUsuario"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
+            android:layout_marginStart="24dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/imgUsuario"
-            android:layout_marginStart="12dp"
             android:gravity="center_vertical"
             android:text="[User]"
             android:textColor="#FFFFFF"
@@ -49,6 +50,7 @@
             android:id="@+id/iconBack"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginEnd="24dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/chevron_backward_24"
@@ -57,6 +59,7 @@
 
     </RelativeLayout>
 
+    <!-- ===== TÍTULO BIENVENIDA ===== -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,32 +97,34 @@
 
     </RelativeLayout>
 
+    <!-- ===== CARD CON MENÚ PRINCIPAL ===== -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="8dp"
-        android:layout_gravity="center"
-        android:gravity="center"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="18dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:cardCornerRadius="12dp"
         app:cardBackgroundColor="#3E3A72"
         app:cardElevation="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:layout_gravity="center"
-            android:background="#1D1B41"
-            android:padding="16dp"
-            android:backgroundTint="#3E3A72"
-            >
+            android:padding="16dp">
+
             <!-- Menú con botones -->
             <GridLayout
                 android:id="@+id/tarjetaCentralMenuPrincipal"
-                android:layout_width="324dp"
-                android:layout_height="450dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:columnCount="2"
+                android:rowCount="3"
+                android:alignmentMode="alignMargins"
+                android:columnOrderPreserved="false"
                 android:padding="12dp"
                 android:useDefaultMargins="true">
 
@@ -130,6 +135,7 @@
                     android:layout_width="0dp"
                     android:layout_height="120dp"
                     android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
                     android:layout_margin="8dp"
                     android:backgroundTint="#1D1B41"
                     android:fontFamily="@font/inria_sans"
@@ -149,6 +155,7 @@
                     android:layout_width="0dp"
                     android:layout_height="120dp"
                     android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
                     android:layout_margin="8dp"
                     android:backgroundTint="#1D1B41"
                     android:fontFamily="@font/inria_sans"
@@ -168,6 +175,7 @@
                     android:layout_width="0dp"
                     android:layout_height="120dp"
                     android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
                     android:layout_margin="8dp"
                     android:backgroundTint="#1D1B41"
                     android:fontFamily="@font/inria_sans"
@@ -187,6 +195,7 @@
                     android:layout_width="0dp"
                     android:layout_height="120dp"
                     android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
                     android:layout_margin="8dp"
                     android:backgroundTint="#1D1B41"
                     android:fontFamily="@font/inria_sans"
@@ -203,9 +212,11 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnAcercaDe"
                     style="@style/Widget.Material3.Button.ElevatedButton"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="120dp"
                     android:layout_columnSpan="2"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
                     android:layout_margin="8dp"
                     android:backgroundTint="#1D1B41"
                     android:fontFamily="@font/inria_sans"
@@ -224,13 +235,12 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <!-- ===== FOOTER ===== -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#1D1B41"
-        android:padding="16dp"
-        android:backgroundTint="#1D1B41">
+        android:padding="16dp">
 
         <!-- Texto final -->
         <TextView
@@ -240,10 +250,8 @@
             android:text="¿Necesitas ayuda?"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:textStyle="bold"
             android:fontFamily="@font/inria_sans"
-            android:layout_gravity="center_horizontal"
-            />
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 </LinearLayout>

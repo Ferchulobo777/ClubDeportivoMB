@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import android.view.animation.AnimationUtils
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
@@ -46,6 +47,11 @@ class HomeActivity : AppCompatActivity() {
         // Mostrar nombre en el header
         val tvUser = findViewById<TextView>(R.id.tvUsuario)
         tvUser.text = nombreUsuario
+
+        // ANIMACIÓN DE LA PELOTA -
+        val imgPelota = findViewById<ImageView>(R.id.imgPelota)
+        val rotation = AnimationUtils.loadAnimation(this, R.anim.rotate_ball)
+        imgPelota.startAnimation(rotation)
 
         // Botones del menú
         val btnClientes = findViewById<MaterialButton>(R.id.btnClientes)
