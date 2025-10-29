@@ -7,12 +7,12 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import android.view.animation.AnimationUtils
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
 import android.widget.ImageView
 import android.view.LayoutInflater
+import com.example.clubdeportivomb.utils.AppUtils
 
 class HomeActivity : AppCompatActivity() {
 
@@ -39,18 +39,17 @@ class HomeActivity : AppCompatActivity() {
         val nombreUsuario = intent.getStringExtra("NOMBRE_USUARIO") ?: "Usuario"
         val rolUsuario = intent.getStringExtra("ROL_USUARIO") ?: "Invitado"
 
-        // Mostrar nombre en el saludo
+        // Referencias a las vistas
         val tvSaludo = findViewById<TextView>(R.id.title_saludo_menu)
-        tvSaludo.text = "Bienvenido/a $nombreUsuario!!"
+        val imgPelota = findViewById<ImageView>(R.id.imgPelota)
+        val tvUser = findViewById<TextView>(R.id.tvUsuario)
+
+        // Usar las funciones utilitarias
+        AppUtils.setStyledWelcomeMessage(tvSaludo, nombreUsuario, this)
+        AppUtils.startBallAnimation(imgPelota, this)
 
         // Mostrar nombre en el header
-        val tvUser = findViewById<TextView>(R.id.tvUsuario)
-        tvUser.text = nombreUsuario
-
-        // ANIMACIÓN DE LA PELOTA
-        val imgPelota = findViewById<ImageView>(R.id.imgPelota)
-        val rotation = AnimationUtils.loadAnimation(this, R.anim.rotate_ball)
-        imgPelota.startAnimation(rotation)
+        tvUser.text = "$nombreUsuario - $rolUsuario"
 
         // Botones del menú
         val btnClientes = findViewById<MaterialButton>(R.id.btnClientes)
