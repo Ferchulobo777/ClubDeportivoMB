@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
 import android.widget.ImageView
-
+import android.view.LayoutInflater
 
 class HomeActivity : AppCompatActivity() {
 
@@ -30,13 +30,12 @@ class HomeActivity : AppCompatActivity() {
 
         val iconBack = findViewById<ImageView>(R.id.iconBack)
 
+        // Chevron - muestra modal de salida
         iconBack.setOnClickListener {
-            finish() // cierra esta Activity y vuelve a la anterior
+            showExitDialog()
         }
 
-
-
-        // Obtener datos del usuario pasados desde LoginActivity
+        // Obtener datos del usuario
         val nombreUsuario = intent.getStringExtra("NOMBRE_USUARIO") ?: "Usuario"
         val rolUsuario = intent.getStringExtra("ROL_USUARIO") ?: "Invitado"
 
@@ -48,7 +47,7 @@ class HomeActivity : AppCompatActivity() {
         val tvUser = findViewById<TextView>(R.id.tvUsuario)
         tvUser.text = nombreUsuario
 
-        // ANIMACIÓN DE LA PELOTA -
+        // ANIMACIÓN DE LA PELOTA
         val imgPelota = findViewById<ImageView>(R.id.imgPelota)
         val rotation = AnimationUtils.loadAnimation(this, R.anim.rotate_ball)
         imgPelota.startAnimation(rotation)
@@ -65,32 +64,32 @@ class HomeActivity : AppCompatActivity() {
             btnTurnos.visibility = View.GONE
         }
 
-        // Listeners de botones (puedes cambiar para abrir tus pantallas)
-        btnClientes.setOnClickListener { /* Abrir pantalla clientes */
+        // Listeners de botones
+        btnClientes.setOnClickListener {
             val intent = Intent(this, ClienteActivity::class.java)
             intent.putExtra("NOMBRE_USUARIO", nombreUsuario)
             intent.putExtra("ROL_USUARIO", rolUsuario)
             startActivity(intent)
         }
-        btnPersonal.setOnClickListener { /* Abrir pantalla personal */
+        btnPersonal.setOnClickListener {
             val intent = Intent(this, PersonalActivity::class.java)
             intent.putExtra("NOMBRE_USUARIO", nombreUsuario)
             intent.putExtra("ROL_USUARIO", rolUsuario)
             startActivity(intent)
         }
-        btnActividades.setOnClickListener { /* Abrir pantalla actividades */
+        btnActividades.setOnClickListener {
             val intent = Intent(this, ActividadesActivity::class.java)
             intent.putExtra("NOMBRE_USUARIO", nombreUsuario)
             intent.putExtra("ROL_USUARIO", rolUsuario)
             startActivity(intent)
         }
-        btnTurnos.setOnClickListener { /* Abrir pantalla turnos */
+        btnTurnos.setOnClickListener {
             val intent = Intent(this, TurnosActivity::class.java)
             intent.putExtra("NOMBRE_USUARIO", nombreUsuario)
             intent.putExtra("ROL_USUARIO", rolUsuario)
             startActivity(intent)
         }
-        btnAcercaDe.setOnClickListener { /* Abrir pantalla acerca de */
+        btnAcercaDe.setOnClickListener {
             AlertDialog.Builder(this).apply {
                 setTitle("Acerca De")
                 setMessage("Desarrollo de Aplicaciones para Dispositivos Moviles\n" +
@@ -106,5 +105,38 @@ class HomeActivity : AppCompatActivity() {
                 show()
             }
         }
+    }
+
+    // Botón físico BACK - también muestra el modal de salida
+    override fun onBackPressed() {
+        showExitDialog()
+    }
+
+    // FUNCIÓN PARA MOSTRAR EL MODAL PERSONALIZADO DE SALIDA
+    private fun showExitDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_modal_salir, null)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        // Configurar el fondo transparente del dialog
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        // Botón NO - simplemente cierra el dialog
+        val btnNo = dialogView.findViewById<MaterialButton>(R.id.btnNo)
+        btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        // Botón SÍ - cierra la aplicación
+        val btnSi = dialogView.findViewById<MaterialButton>(R.id.btnSi)
+        btnSi.setOnClickListener {
+            dialog.dismiss()
+            finishAffinity() // Cierra todas las actividades y sale de la app
+        }
+
+        dialog.show()
     }
 }

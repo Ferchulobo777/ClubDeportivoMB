@@ -6,16 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="#000000">
+    app:cardCornerRadius="24dp"
+    android:background="@android:color/transparent">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="367dp"
         android:layout_height="211dp"
         android:layout_gravity="center"
         android:layout_margin="8dp"
-        app:cardCornerRadius="16dp"
+        app:cardCornerRadius="24dp"
         app:cardBackgroundColor="#3E3A72"
-        app:cardElevation="8dp">
+        app:cardElevation="12dp">
 
         <LinearLayout
             android:orientation="vertical"
@@ -38,8 +39,7 @@
                 android:layout_height="32dp"
                 android:text="¿Estás seguro que quieres salir?"
                 android:textColor="#FFFFFF"
-                android:textSize="22sp"
-                android:textStyle="bold"
+                android:textSize="20sp"
                 android:gravity="center"
                 android:layout_marginBottom="24dp"
                 android:fontFamily="@font/inria_sans" />
@@ -60,8 +60,7 @@
                     android:layout_marginStart="8dp"
                     android:text="NO"
                     android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:fontFamily="@font/inria_sans"
                     app:cornerRadius="10dp"
                     app:backgroundTint="#312F5E"
@@ -74,12 +73,11 @@
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:text="SÍ"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textColor="#FFFFFF"
-                    android:textStyle="bold"
                     android:fontFamily="@font/inria_sans"
                     app:cornerRadius="10dp"
-                    app:backgroundTint="#312F5E"
+                    app:backgroundTint="#E53935"
                     style="@style/Widget.Material3.Button.TextButton" />
 
             </LinearLayout>

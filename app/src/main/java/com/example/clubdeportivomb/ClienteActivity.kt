@@ -2,6 +2,8 @@ package com.example.clubdeportivomb
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.clubdeportivomb.databinding.ActivityClienteBinding
 import android.widget.Toast
@@ -21,6 +23,10 @@ class ClienteActivity : AppCompatActivity() {
             val intent = Intent(this, TipoClienteAgregarClienteActivity::class.java)
             startActivity(intent)
         }
+        // ANIMACIÓN DE LA PELOTA -
+        val imgPelota = findViewById<ImageView>(R.id.imgPelota)
+        val rotation = AnimationUtils.loadAnimation(this, R.anim.rotate_ball)
+        imgPelota.startAnimation(rotation)
 
         // Listener para "Vencimiento Cliente"
         binding.btnVencimientosCliente.setOnClickListener {
