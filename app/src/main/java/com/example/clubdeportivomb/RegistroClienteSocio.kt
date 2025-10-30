@@ -2,58 +2,57 @@ package com.example.clubdeportivomb
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.widget.*
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.clubdeportivomb.databinding.ActivityRegistroClienteSocioBinding
 import com.example.clubdeportivomb.repository.ClubDeportivoRepository
+import com.example.clubdeportivomb.utils.AppUtils
 import java.util.Calendar
 
 class RegistroClienteSocio : AppCompatActivity() {
 
-    // repositorio
+    private lateinit var binding: ActivityRegistroClienteSocioBinding
     private lateinit var repository: ClubDeportivoRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_registro_cliente_socio)
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = ActivityRegistroClienteSocioBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // === Inicializar Repositorio ===
         repository = ClubDeportivoRepository(this)
 
-        // === Referencias a los campos ===
-        val etNombre = findViewById<EditText>(R.id.etNombre)
-        val etApellido = findViewById<EditText>(R.id.etApellido)
-        val etFechaNacimiento = findViewById<EditText>(R.id.etFechaNacimiento)
-        val etDni = findViewById<EditText>(R.id.etDni)
-        val etTelefono = findViewById<EditText>(R.id.etTelefono)
-        val etEmail = findViewById<EditText>(R.id.etEmail)
-        val etDireccion = findViewById<EditText>(R.id.etDireccion)
-        val etFechaInscripcion = findViewById<EditText>(R.id.etFechaInscripcion)
-        val btnGuardar = findViewById<Button>(R.id.btnGuardar)
-        val iconBack = findViewById<ImageView>(R.id.iconBack)
+        // === Obtener datos del usuario ===
+        val nombreUsuario = intent.getStringExtra("NOMBRE_USUARIO") ?: "Usuario"
+        val rolUsuario = intent.getStringExtra("ROL_USUARIO") ?: "Invitado"
+
+        // === Mostrar datos del usuario en el header ===
+        binding.tvUsuario.text = "$nombreUsuario - $rolUsuario"
+
+        // === ANIMACIÓN DE LA PELOTA ===
+        AppUtils.startBallAnimation(binding.imgPelota, this)
+
+        // === TÍTULO CON "SOCIO" DESTACADO
+        AppUtils.setStyledTextWithHighlight(
+            binding.titleTipoClienteAgregar,
+            "Completa todos los campos de SOCIO que quieres registrar",
+            "SOCIO",
+            this
+        )
 
         // === Botón volver atrás ===
-        iconBack.setOnClickListener {
+        binding.iconBack.setOnClickListener {
             finish()
         }
 
         // === DatePickers ===
         val calendar = Calendar.getInstance()
 
-        etFechaNacimiento.setOnClickListener {
+        binding.etFechaNacimiento.setOnClickListener {
             DatePickerDialog(
                 this,
                 { _, year, month, day ->
-                    etFechaNacimiento.setText("$day/${month + 1}/$year")
+                    binding.etFechaNacimiento.setText("$day/${month + 1}/$year")
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -61,11 +60,11 @@ class RegistroClienteSocio : AppCompatActivity() {
             ).show()
         }
 
-        etFechaInscripcion.setOnClickListener {
+        binding.etFechaInscripcion.setOnClickListener {
             DatePickerDialog(
                 this,
                 { _, year, month, day ->
-                    etFechaInscripcion.setText("$day/${month + 1}/$year")
+                    binding.etFechaInscripcion.setText("$day/${month + 1}/$year")
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -74,15 +73,15 @@ class RegistroClienteSocio : AppCompatActivity() {
         }
 
         // === Lógica de guardado de socio ===
-        btnGuardar.setOnClickListener {
-            val nombre = etNombre.text.toString().trim()
-            val apellido = etApellido.text.toString().trim()
-            val fechaNacimiento = etFechaNacimiento.text.toString().trim()
-            val dni = etDni.text.toString().trim()
-            val telefono = etTelefono.text.toString().trim()
-            val direccion = etDireccion.text.toString().trim()
-            val email = etEmail.text.toString().trim()
-            val fechaAlta = etFechaInscripcion.text.toString().trim()
+        binding.btnGuardar.setOnClickListener {
+            val nombre = binding.etNombre.text.toString().trim()
+            val apellido = binding.etApellido.text.toString().trim()
+            val fechaNacimiento = binding.etFechaNacimiento.text.toString().trim()
+            val dni = binding.etDni.text.toString().trim()
+            val telefono = binding.etTelefono.text.toString().trim()
+            val direccion = binding.etDireccion.text.toString().trim()
+            val email = binding.etEmail.text.toString().trim()
+            val fechaAlta = binding.etFechaInscripcion.text.toString().trim()
 
             // === Validación básica ===
             if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty()) {
@@ -109,6 +108,12 @@ class RegistroClienteSocio : AppCompatActivity() {
 
             Toast.makeText(this, "Socio registrado correctamente ✅", Toast.LENGTH_LONG).show()
             finish() // vuelve al menú anterior
+        }
+
+        // === Botón Apto Físico (opcional) ===
+        binding.btnAptoFisico.setOnClickListener {
+            Toast.makeText(this, "Funcionalidad de Apto Físico", Toast.LENGTH_SHORT).show()
+            // Aquí puedes agregar la lógica para el apto físico
         }
     }
 }

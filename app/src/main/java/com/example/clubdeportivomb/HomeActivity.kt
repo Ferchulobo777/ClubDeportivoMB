@@ -6,13 +6,13 @@ import android.view.View
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AppCompatActivity  // ← ESTE IMPORT FALTABA
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
 import android.widget.ImageView
 import android.view.LayoutInflater
+import com.example.clubdeportivomb.utils.AppUtils
 
 class HomeActivity : AppCompatActivity() {
 
@@ -30,27 +30,26 @@ class HomeActivity : AppCompatActivity() {
 
         val iconBack = findViewById<ImageView>(R.id.iconBack)
 
-        // Chevron - muestra modal de salida
+        // Chevron - muestra modal de CERRAR SESIÓN (no salir de la app)
         iconBack.setOnClickListener {
-            showExitDialog()
+            showLogoutDialog()  // ← Cambiado a logout
         }
 
         // Obtener datos del usuario
         val nombreUsuario = intent.getStringExtra("NOMBRE_USUARIO") ?: "Usuario"
         val rolUsuario = intent.getStringExtra("ROL_USUARIO") ?: "Invitado"
 
-        // Mostrar nombre en el saludo
+        // Referencias a las vistas
         val tvSaludo = findViewById<TextView>(R.id.title_saludo_menu)
-        tvSaludo.text = "Bienvenido/a $nombreUsuario!!"
+        val imgPelota = findViewById<ImageView>(R.id.imgPelota)
+        val tvUser = findViewById<TextView>(R.id.tvUsuario)
+
+        // Usar las funciones utilitarias
+        AppUtils.setStyledWelcomeMessage(tvSaludo, nombreUsuario, this)
+        AppUtils.startBallAnimation(imgPelota, this)
 
         // Mostrar nombre en el header
-        val tvUser = findViewById<TextView>(R.id.tvUsuario)
-        tvUser.text = nombreUsuario
-
-        // ANIMACIÓN DE LA PELOTA
-        val imgPelota = findViewById<ImageView>(R.id.imgPelota)
-        val rotation = AnimationUtils.loadAnimation(this, R.anim.rotate_ball)
-        imgPelota.startAnimation(rotation)
+        tvUser.text = "$nombreUsuario - $rolUsuario"
 
         // Botones del menú
         val btnClientes = findViewById<MaterialButton>(R.id.btnClientes)
@@ -107,14 +106,14 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    // Botón físico BACK - también muestra el modal de salida
+    // Botón físico BACK - también muestra el modal de CERRAR SESIÓN
     override fun onBackPressed() {
-        showExitDialog()
+        showLogoutDialog()  // ← Cambiado a logout
     }
 
-    // FUNCIÓN PARA MOSTRAR EL MODAL PERSONALIZADO DE SALIDA
-    private fun showExitDialog() {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_modal_salir, null)
+    // FUNCIÓN PARA MOSTRAR EL MODAL DE CERRAR SESIÓN (vuelve al Login)
+    private fun showLogoutDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_modal_cerrar_sesion, null)  // ← XML de cerrar sesión
 
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -123,6 +122,7 @@ class HomeActivity : AppCompatActivity() {
 
         // Configurar el fondo transparente del dialog
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.setDimAmount(0.6f) // Fondo oscuro semitransparente
 
         // Botón NO - simplemente cierra el dialog
         val btnNo = dialogView.findViewById<MaterialButton>(R.id.btnNo)
@@ -130,11 +130,15 @@ class HomeActivity : AppCompatActivity() {
             dialog.dismiss()
         }
 
-        // Botón SÍ - cierra la aplicación
+        // Botón SÍ - CIERRA SESIÓN Y VUELVE AL LOGIN
         val btnSi = dialogView.findViewById<MaterialButton>(R.id.btnSi)
         btnSi.setOnClickListener {
             dialog.dismiss()
-            finishAffinity() // Cierra todas las actividades y sale de la app
+            // Cierra todas las actividades y vuelve al Login
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
         }
 
         dialog.show()

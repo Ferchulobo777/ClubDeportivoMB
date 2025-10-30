@@ -2,48 +2,51 @@ package com.example.clubdeportivomb
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import android.widget.Button
-import android.widget.ImageView
+import com.example.clubdeportivomb.databinding.ActivityTipoClienteAgregarClienteBinding
 import android.widget.Toast
+import com.example.clubdeportivomb.utils.AppUtils
 
 class TipoClienteAgregarClienteActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityTipoClienteAgregarClienteBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_tipo_cliente_agregar_cliente)
+        binding = ActivityTipoClienteAgregarClienteBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Ajuste de bordes
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-            return@setOnApplyWindowInsetsListener insets
-        }
+        // Obtener datos del usuario
+        val nombreUsuario = intent.getStringExtra("NOMBRE_USUARIO") ?: "Usuario"
+        val rolUsuario = intent.getStringExtra("ROL_USUARIO") ?: "Invitado"
 
-        // Botones
-        val btnSocio = findViewById<Button>(R.id.btnTipoClienteSocio)
-        val btnNoSocio = findViewById<Button>(R.id.btnTipoClienteNoSocio)
-        val iconBack = findViewById<ImageView>(R.id.iconBack)
+        // Mostrar nombre en el header USANDO BINDING
+        binding.tvUsuario.text = "$nombreUsuario - $rolUsuario"
 
-        btnSocio.setOnClickListener {
+        // ANIMACIÓN DE LA PELOTA USANDO BINDING
+        AppUtils.startBallAnimation(binding.imgPelota, this)
+
+        // Listeners de botones USANDO BINDING
+        binding.btnTipoClienteSocio.setOnClickListener {
             Toast.makeText(this, "Botón Socio presionado", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, RegistroClienteSocio::class.java)
+            // PASAR LOS DATOS DEL USUARIO
+            intent.putExtra("NOMBRE_USUARIO", nombreUsuario)
+            intent.putExtra("ROL_USUARIO", rolUsuario)
             startActivity(intent)
         }
 
-        btnNoSocio.setOnClickListener {
+        binding.btnTipoClienteNoSocio.setOnClickListener {
             Toast.makeText(this, "Botón No Socio presionado", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, RegistroClienteNoSocio::class.java)
+            // PASAR LOS DATOS DEL USUARIO
+            intent.putExtra("NOMBRE_USUARIO", nombreUsuario)
+            intent.putExtra("ROL_USUARIO", rolUsuario)
             startActivity(intent)
         }
 
-        iconBack.setOnClickListener {
-            finish() // cierra esta Activity y vuelve a la anterior
+        binding.iconBack.setOnClickListener {
+            finish()
         }
     }
 }
