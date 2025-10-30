@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#1D1B41"
     android:padding="18dp"
-    tools:context=".MainActivity">
+    tools:context=".ClienteBuscarCliente">
 
-    <!-- Encabezado con ícono de usuario -->
+    <!-- ===== ENCABEZADO ===== -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,6 +21,7 @@
             android:id="@+id/imgUsuario"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginStart="24dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:src="@drawable/person_24"
@@ -33,14 +35,13 @@
             android:id="@+id/tvUsuario"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
+            android:layout_marginStart="4dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/imgUsuario"
-            android:layout_marginStart="12dp"
             android:gravity="center_vertical"
             android:text="Usuario"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textSize="14sp"
             android:fontFamily="@font/inria_sans"/>
 
         <!-- Chevron a la derecha -->
@@ -48,14 +49,15 @@
             android:id="@+id/iconBack"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginEnd="24dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:contentDescription="Volver"
             android:src="@drawable/chevron_backward_24"
-            app:tint="#FFFFFF" />
+            android:tint="#FFFFFF" />
 
     </RelativeLayout>
 
+    <!-- ===== TÍTULO ===== -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,7 +66,6 @@
 
         <!-- Grupo pelota + texto centrado -->
         <LinearLayout
-            android:id="@+id/main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -78,15 +79,15 @@
                 android:layout_height="32dp"
                 android:src="@drawable/soccer_ball" />
 
-            <!-- Texto Bienvenido/a a la derecha de la pelota -->
+            <!-- Texto a la derecha de la pelota -->
             <TextView
                 android:id="@+id/title_clientes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:text="Ingresa el Nombre Completo o número de Dni del cliente que desea buscar"
+                android:layout_marginStart="6dp"
+                android:text="Buscar Cliente por Nombre o DNI"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/inria_sans" />
 
@@ -94,11 +95,15 @@
 
     </RelativeLayout>
 
+    <!-- ===== CARD CON FORMULARIO DE BÚSQUEDA ===== -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="8dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="18dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:cardCornerRadius="12dp"
         app:cardBackgroundColor="#3E3A72"
         app:cardElevation="4dp">
 
@@ -106,39 +111,42 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="#3E3A72"
             android:gravity="center"
-            android:padding="24dp">
+            android:padding="30dp">
 
+            <!-- Texto descriptivo -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nombre o Dni del Cliente"
+                android:text="Ingresa el Nombre Completo o número de DNI del cliente"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_gravity="start"
-                android:layout_marginBottom="2dp"
+                android:textAlignment="center"
+                android:layout_marginBottom="24dp"
                 android:fontFamily="@font/inria_sans" />
 
             <!-- Input de búsqueda -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:boxBackgroundColor="#FFFFFF"
-                app:boxCornerRadiusBottomEnd="8dp"
-                app:boxCornerRadiusBottomStart="8dp"
-                app:boxCornerRadiusTopEnd="8dp"
-                app:boxCornerRadiusTopStart="8dp"
+                android:layout_marginBottom="32dp"
+                app:boxBackgroundColor="#F1F3DF"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxStrokeColor="#00BCD4"
                 app:hintTextColor="@color/white"
-                app:startIconTint="#FFFFFF">
+                app:startIconDrawable="@drawable/search_24"
+                app:startIconTint="#1D1B41">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etBuscarCliente"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="Nombre o DNI"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     android:maxLines="1"
@@ -149,12 +157,13 @@
             <!-- Botón Buscar Cliente -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBuscarCliente"
-                android:layout_width="211dp"
+                android:layout_width="200dp"
                 android:layout_height="56dp"
                 android:text="BUSCAR CLIENTE"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:fontFamily="@font/inria_sans"
                 app:cornerRadius="8dp"
                 app:backgroundTint="#1D1B41"
                 app:icon="@drawable/search_24"
@@ -165,13 +174,12 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <!-- ===== FOOTER ===== -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#1D1B41"
-        android:padding="16dp"
-        android:backgroundTint="#1D1B41">
+        android:padding="16dp">
 
         <!-- Texto final -->
         <TextView
@@ -181,10 +189,8 @@
             android:text="¿Necesitas ayuda?"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:textStyle="bold"
             android:fontFamily="@font/inria_sans"
-            android:layout_gravity="center_horizontal"
-             />
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 </LinearLayout>

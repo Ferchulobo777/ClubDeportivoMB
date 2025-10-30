@@ -2,10 +2,13 @@ package com.example.clubdeportivomb
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.clubdeportivomb.databinding.ActivityClienteBinding
-import android.widget.Toast
 import com.example.clubdeportivomb.utils.AppUtils
+import com.google.android.material.button.MaterialButton
 
 class ClienteActivity : AppCompatActivity() {
 
@@ -64,12 +67,33 @@ class ClienteActivity : AppCompatActivity() {
             finish()
         }
 
+        // === FOOTER AYUDA === (ACTUALIZA ESTAS LÍNEAS)
         binding.tvAyuda.setOnClickListener {
-            Toast.makeText(this, "Necesitas ayuda?", Toast.LENGTH_SHORT).show()
+            showHelpDialog()
         }
 
         binding.iconBack.setOnClickListener {
             finish()
         }
+    }
+
+    // FUNCIÓN PARA MOSTRAR EL MODAL PERSONALIZADO DE AYUDA
+    private fun showHelpDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_modal_ayuda, null)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.setDimAmount(0.6f)
+
+        val btnVolver = dialogView.findViewById<MaterialButton>(R.id.button)
+        btnVolver.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }

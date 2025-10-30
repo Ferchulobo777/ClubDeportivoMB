@@ -2,11 +2,14 @@ package com.example.clubdeportivomb
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.clubdeportivomb.databinding.ActivityRegistroClienteSocioBinding
 import com.example.clubdeportivomb.repository.ClubDeportivoRepository
 import com.example.clubdeportivomb.utils.AppUtils
+import com.google.android.material.button.MaterialButton
 import java.util.Calendar
 
 class RegistroClienteSocio : AppCompatActivity() {
@@ -115,5 +118,30 @@ class RegistroClienteSocio : AppCompatActivity() {
             Toast.makeText(this, "Funcionalidad de Apto Físico", Toast.LENGTH_SHORT).show()
             // Aquí puedes agregar la lógica para el apto físico
         }
+
+        // === FOOTER AYUDA ===
+        binding.tvAyuda.setOnClickListener {
+            showHelpDialog()
+        }
+    }
+
+    // FUNCIÓN PARA MOSTRAR EL MODAL PERSONALIZADO DE AYUDA
+    private fun showHelpDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_modal_ayuda, null)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.setDimAmount(0.6f)
+
+        val btnVolver = dialogView.findViewById<MaterialButton>(R.id.button)
+        btnVolver.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }
