@@ -12,7 +12,7 @@ import com.example.clubdeportivomb.repository.ClubDeportivoRepository
 import com.example.clubdeportivomb.model.Usuario
 import java.security.MessageDigest
 import androidx.activity.addCallback
-
+import android.view.LayoutInflater
 
 class LoginActivity : AppCompatActivity() {
 
@@ -63,21 +63,9 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        // Confirmación al presionar atrás
+        // Confirmación al presionar atrás - USA TU MODAL PERSONALIZADO
         onBackPressedDispatcher.addCallback(this) {
-            AlertDialog.Builder(this@LoginActivity).apply {
-                setTitle("Salir")
-                setMessage("¿Deseas salir de la aplicación?")
-                setPositiveButton("Sí") { dialog, _ ->
-                    dialog.dismiss()
-                    finish() // Cierra la actividad
-                }
-                setNegativeButton("No") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                show()
-            }
-
+            showExitDialog()  // ← Cambiado para usar tu modal personalizado
         }
     }
 
@@ -88,6 +76,35 @@ class LoginActivity : AppCompatActivity() {
         intent.putExtra("ROL_USUARIO", rolUsuario)
         startActivity(intent)
         finish()
+    }
+
+    // FUNCIÓN PARA MOSTRAR TU MODAL PERSONALIZADO DE SALIR
+    private fun showExitDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_modal_salir, null)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        // Configurar el fondo transparente del dialog
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.setDimAmount(0.6f) // Fondo oscuro semitransparente
+
+        // Botón NO - simplemente cierra el dialog
+        val btnNo = dialogView.findViewById<MaterialButton>(R.id.btnNo)
+        btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        // Botón SÍ - cierra la aplicación
+        val btnSi = dialogView.findViewById<MaterialButton>(R.id.btnSi)
+        btnSi.setOnClickListener {
+            dialog.dismiss()
+            finishAffinity() // Cierra todas las actividades y sale de la app
+        }
+
+        dialog.show()
     }
 
     // Función para generar hash SHA-256 (por si querés usarlo)
