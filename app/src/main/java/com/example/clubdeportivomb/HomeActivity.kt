@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity  // ← ESTE IMPORT FALTABA
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
@@ -30,9 +30,9 @@ class HomeActivity : AppCompatActivity() {
 
         val iconBack = findViewById<ImageView>(R.id.iconBack)
 
-        // Chevron - muestra modal de CERRAR SESIÓN (no salir de la app)
+        // Chevron - muestra modal de CERRAR SESIÓN
         iconBack.setOnClickListener {
-            showLogoutDialog()  // ← Cambiado a logout
+            showLogoutDialog()
         }
 
         // Obtener datos del usuario
@@ -43,6 +43,7 @@ class HomeActivity : AppCompatActivity() {
         val tvSaludo = findViewById<TextView>(R.id.title_saludo_menu)
         val imgPelota = findViewById<ImageView>(R.id.imgPelota)
         val tvUser = findViewById<TextView>(R.id.tvUsuario)
+        val tvAyuda = findViewById<TextView>(R.id.tvAyuda)
 
         // Usar las funciones utilitarias
         AppUtils.setStyledWelcomeMessage(tvSaludo, nombreUsuario, this)
@@ -89,56 +90,84 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
         btnAcercaDe.setOnClickListener {
-            AlertDialog.Builder(this).apply {
-                setTitle("Acerca De")
-                setMessage("Desarrollo de Aplicaciones para Dispositivos Moviles\n" +
-                        "Proyecto creado por:\n" +
-                        "\n" +
-                        "Fernando Rodriguez\n" +
-                        "Vanesa Aracena\n" +
-                        "Emilia Sosa\n" +
-                        "Franco Guarachi\n" +
-                        "Tomás Maldocena")
-                setNegativeButton("Cerrar", null)
-                create()
-                show()
-            }
+            showAboutDialog()
+        }
+
+        // Listener para "¿Necesitas ayuda?" - ABRE EL MODAL PERSONALIZADO
+        tvAyuda.setOnClickListener {
+            showHelpDialog()
         }
     }
 
     // Botón físico BACK - también muestra el modal de CERRAR SESIÓN
     override fun onBackPressed() {
-        showLogoutDialog()  // ← Cambiado a logout
+        showLogoutDialog()
     }
 
     // FUNCIÓN PARA MOSTRAR EL MODAL DE CERRAR SESIÓN (vuelve al Login)
     private fun showLogoutDialog() {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_modal_cerrar_sesion, null)  // ← XML de cerrar sesión
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_modal_cerrar_sesion, null)
 
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
             .setCancelable(true)
             .create()
 
-        // Configurar el fondo transparente del dialog
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.window?.setDimAmount(0.6f) // Fondo oscuro semitransparente
+        dialog.window?.setDimAmount(0.6f)
 
-        // Botón NO - simplemente cierra el dialog
         val btnNo = dialogView.findViewById<MaterialButton>(R.id.btnNo)
         btnNo.setOnClickListener {
             dialog.dismiss()
         }
 
-        // Botón SÍ - CIERRA SESIÓN Y VUELVE AL LOGIN
         val btnSi = dialogView.findViewById<MaterialButton>(R.id.btnSi)
         btnSi.setOnClickListener {
             dialog.dismiss()
-            // Cierra todas las actividades y vuelve al Login
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             finish()
+        }
+
+        dialog.show()
+    }
+
+    // FUNCIÓN PARA MOSTRAR EL MODAL PERSONALIZADO DE ACERCA DE
+    private fun showAboutDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_modal_acerca_de, null)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.setDimAmount(0.6f)
+
+        val btnVolver = dialogView.findViewById<MaterialButton>(R.id.button)
+        btnVolver.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    // FUNCIÓN PARA MOSTRAR EL MODAL PERSONALIZADO DE AYUDA
+    private fun showHelpDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_modal_ayuda, null)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.setDimAmount(0.6f)
+
+        val btnVolver = dialogView.findViewById<MaterialButton>(R.id.button)
+        btnVolver.setOnClickListener {
+            dialog.dismiss()
         }
 
         dialog.show()

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="#000000">
+    android:background="@android:color/transparent">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
                 android:orientation="vertical"
                 android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="270dp"
+                android:layout_height="300dp"
                 android:background="#1D1B41">
 
 
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:fontFamily="@font/inria_sans" />
 
             </LinearLayout>
