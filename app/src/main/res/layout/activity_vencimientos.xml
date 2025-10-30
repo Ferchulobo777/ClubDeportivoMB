@@ -55,7 +55,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="20dp"
-        android:text="Próximos Vencimientos"
+        android:text="Control de Acceso"
         android:textColor="#FFFFFF"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="12dp"
-        android:queryHint="Buscar por nombre..."
+        android:queryHint="Ingresar fecha"
         android:iconifiedByDefault="false"
         android:background="@drawable/search_view_background" />
 

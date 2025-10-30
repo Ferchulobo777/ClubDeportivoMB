@@ -5,20 +5,25 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.clubdeportivomb.VencimientosActivity
+import androidx.annotation.RequiresApi
+import android.os.Build
+
 
 class ClubDeportivoDBHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "club_deportivo.db"
-        private const val DATABASE_VERSION = 3
+        private const val DATABASE_VERSION = 7
     }
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("PRAGMA foreign_keys = ON;")
 
-        // Personas
-        db.execSQL("""
+        // tablas
+        db.execSQL(
+            """
             CREATE TABLE personas (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nombre TEXT NOT NULL,
@@ -30,10 +35,11 @@ class ClubDeportivoDBHelper(context: Context) :
                 email TEXT,
                 fecha_alta TEXT
             )
-        """)
+        """
+        )
 
-        // Usuarios
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE usuarios (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT NOT NULL UNIQUE,
@@ -42,10 +48,11 @@ class ClubDeportivoDBHelper(context: Context) :
                 persona_id INTEGER,
                 FOREIGN KEY (persona_id) REFERENCES personas(id) ON DELETE SET NULL
             )
-        """)
+        """
+        )
 
-        // Socios
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE socios (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 persona_id INTEGER NOT NULL,
@@ -54,10 +61,11 @@ class ClubDeportivoDBHelper(context: Context) :
                 certificado TEXT NOT NULL,
                 FOREIGN KEY (persona_id) REFERENCES personas(id) ON DELETE CASCADE
             )
-        """)
+        """
+        )
 
-        // No socios
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE no_socios (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 persona_id INTEGER NOT NULL,
@@ -65,10 +73,11 @@ class ClubDeportivoDBHelper(context: Context) :
                 fecha_alta TEXT NOT NULL,
                 FOREIGN KEY (persona_id) REFERENCES personas(id) ON DELETE CASCADE
             )
-        """)
+        """
+        )
 
-        // Profesores
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE profesores (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 persona_id INTEGER NOT NULL,
@@ -77,10 +86,11 @@ class ClubDeportivoDBHelper(context: Context) :
                 sueldo REAL,
                 FOREIGN KEY (persona_id) REFERENCES personas(id) ON DELETE CASCADE
             )
-        """)
+        """
+        )
 
-        // Nutricionistas
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE nutricionistas (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 persona_id INTEGER NOT NULL,
@@ -88,10 +98,11 @@ class ClubDeportivoDBHelper(context: Context) :
                 matricula TEXT NOT NULL,
                 FOREIGN KEY (persona_id) REFERENCES personas(id) ON DELETE CASCADE
             )
-        """)
+        """
+        )
 
-        // Actividades
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE actividades (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nombre TEXT NOT NULL,
@@ -103,11 +114,12 @@ class ClubDeportivoDBHelper(context: Context) :
                 profesor_id INTEGER,
                 FOREIGN KEY (profesor_id) REFERENCES profesores(id) ON DELETE SET NULL
             )
-        """)
+        """
+        )
         db.execSQL("CREATE UNIQUE INDEX unq_dia_hora_salon ON actividades(dia, hora, salon)")
 
-        // Actividad participantes
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE actividad_participantes (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 actividad_id INTEGER NOT NULL,
@@ -117,10 +129,11 @@ class ClubDeportivoDBHelper(context: Context) :
                 FOREIGN KEY (actividad_id) REFERENCES actividades(id) ON DELETE CASCADE,
                 FOREIGN KEY (persona_id) REFERENCES personas(id) ON DELETE CASCADE
             )
-        """)
+        """
+        )
 
-        // Asistencias socios
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE asistencias_socios (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 persona_id INTEGER NOT NULL,
@@ -131,10 +144,11 @@ class ClubDeportivoDBHelper(context: Context) :
                 hora_salida TEXT,
                 FOREIGN KEY (persona_id) REFERENCES personas(id) ON DELETE CASCADE
             )
-        """)
+        """
+        )
 
-        // Asistencias personal
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE asistencias_personal (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 persona_id INTEGER NOT NULL,
@@ -145,10 +159,11 @@ class ClubDeportivoDBHelper(context: Context) :
                 hora_salida TEXT,
                 FOREIGN KEY (persona_id) REFERENCES personas(id) ON DELETE CASCADE
             )
-        """)
+        """
+        )
 
-        // Empleados administrativos
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE empleados_administrativos (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 persona_id INTEGER NOT NULL,
@@ -157,10 +172,11 @@ class ClubDeportivoDBHelper(context: Context) :
                 sueldo REAL,
                 FOREIGN KEY (persona_id) REFERENCES personas(id) ON DELETE CASCADE
             )
-        """)
+        """
+        )
 
-        // Sueldos
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE sueldos (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 persona_id INTEGER NOT NULL,
@@ -170,10 +186,11 @@ class ClubDeportivoDBHelper(context: Context) :
                 monto REAL,
                 FOREIGN KEY (persona_id) REFERENCES personas(id)
             )
-        """)
+        """
+        )
 
-        // Cuotas
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE cuotas (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 socio_id INTEGER NOT NULL,
@@ -183,10 +200,11 @@ class ClubDeportivoDBHelper(context: Context) :
                 estado TEXT CHECK(estado IN ('PAGA','IMPAGA')) DEFAULT 'IMPAGA',
                 FOREIGN KEY (socio_id) REFERENCES socios(id) ON DELETE CASCADE
             )
-        """)
+        """
+        )
 
-        // Turnos nutricionista
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE turnos_nutricionista (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 socio_id INTEGER NOT NULL,
@@ -196,10 +214,11 @@ class ClubDeportivoDBHelper(context: Context) :
                 FOREIGN KEY (socio_id) REFERENCES socios(id) ON DELETE CASCADE,
                 FOREIGN KEY (nutricionista_id) REFERENCES nutricionistas(id) ON DELETE CASCADE
             )
-        """)
+        """
+        )
 
-        // Pagos
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE pagos (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 dni_cliente TEXT,
@@ -210,9 +229,10 @@ class ClubDeportivoDBHelper(context: Context) :
                 cuotas TEXT,
                 fecha_pago TEXT
             )
-        """)
+        """
+        )
 
-        // 🔹 Insertar datos dummy para pruebas
+        //datos dummy
         insertarDatosDummy(db)
     }
 
@@ -240,12 +260,32 @@ class ClubDeportivoDBHelper(context: Context) :
     // ----------------------------------------------------
     private fun insertarDatosDummy(db: SQLiteDatabase) {
         try {
-            val nombres = listOf("Juan", "María", "Carlos", "Lucía", "Pedro", "Laura", "José", "Ana", "Diego", "Sofía")
-            val apellidos = listOf("Pérez", "Gómez", "López", "Fernández", "Ruiz", "Torres", "Silva", "Molina", "Acosta", "Herrera")
-
+            val nombres = listOf(
+                "Juan",
+                "María",
+                "Carlos",
+                "Lucía",
+                "Pedro",
+                "Laura",
+                "José",
+                "Ana",
+                "Diego",
+                "Sofía"
+            )
+            val apellidos = listOf(
+                "Pérez",
+                "Gómez",
+                "López",
+                "Fernández",
+                "Ruiz",
+                "Torres",
+                "Silva",
+                "Molina",
+                "Acosta",
+                "Herrera"
+            )
             val personaIds = mutableListOf<Long>()
 
-            // PERSONAS
             for (i in 0 until 10) {
                 val cv = ContentValues().apply {
                     put("nombre", nombres[i])
@@ -285,7 +325,18 @@ class ClubDeportivoDBHelper(context: Context) :
 
             // PROFESORES
             val profesorIds = mutableListOf<Long>()
-            val especialidades = listOf("Spinning", "Yoga", "Crossfit", "Pilates", "Zumba", "Natación", "Boxeo", "Funcional", "GAP", "HIIT")
+            val especialidades = listOf(
+                "Spinning",
+                "Yoga",
+                "Crossfit",
+                "Pilates",
+                "Zumba",
+                "Natación",
+                "Boxeo",
+                "Funcional",
+                "GAP",
+                "HIIT"
+            )
             for (i in 0 until 10) {
                 val cv = ContentValues().apply {
                     put("persona_id", personaIds[i])
@@ -310,7 +361,18 @@ class ClubDeportivoDBHelper(context: Context) :
             // ACTIVIDADES
             val dias = listOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes")
             val horas = listOf("18:00", "19:00", "20:00", "21:00")
-            val salones = listOf("AZUL", "VERDE", "ROJO", "AMARILLO", "VIOLETA", "NARANJA", "NEGRO", "GRIS", "BLANCO", "CELESTE")
+            val salones = listOf(
+                "AZUL",
+                "VERDE",
+                "ROJO",
+                "AMARILLO",
+                "VIOLETA",
+                "NARANJA",
+                "NEGRO",
+                "GRIS",
+                "BLANCO",
+                "CELESTE"
+            )
 
             val actividadIds = mutableListOf<Long>()
             for (i in 0 until 10) {
@@ -351,10 +413,98 @@ class ClubDeportivoDBHelper(context: Context) :
                 db.insert("pagos", null, cv)
             }
 
-            Log.d("DBHelper", "✅ Datos dummy insertados correctamente")
+            // CUOTAS (5 vencidas y 5 pagas)
+            for (i in 0 until 10) {
+                val cv = ContentValues().apply {
+                    put("socio_id", i + 1) // los socios van del 1 al 10
+                    // Alternamos: los primeros 5 vencidos, los otros 5 pagos
+                    if (i < 5) {
+                        put("fecha_vencimiento", "2025-11-01") // vencidos
+                        put("fecha_pago", null as String?)
+                        put("monto", 5000 + i * 100)
+                        put("estado", "IMPAGA")
+                    } else {
+                        put("fecha_vencimiento", "2025-12-15") // todavía vigente
+                        put("fecha_pago", "2025-10-15")
+                        put("monto", 5000 + i * 100)
+                        put("estado", "PAGA")
+                    }
+                }
+                db.insert("cuotas", null, cv)
+            }
 
+            //Agregar 2 cuotas con vencimiento HOY
+            val dateFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+            val hoy = dateFormat.format(java.util.Date())
+
+            for (i in 11..12) {
+                val cv = ContentValues().apply {
+                    put("socio_id", (i - 10)) // reutilizamos los primeros socios
+                    put("fecha_vencimiento", hoy)
+                    put("fecha_pago", null as String?)
+                    put("monto", 6000)
+                    put("estado", "IMPAGA")
+                }
+                db.insert("cuotas", null, cv)
+            }
+
+
+            Log.d("DBHelper", "✅ Datos dummy insertados correctamente")
         } catch (e: Exception) {
             Log.e("DBHelper", "❌ Error insertando datos dummy", e)
         }
     }
+
+
+    // Obtener socios con cuota vencida
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun obtenerSociosConVencimiento(): List<VencimientosActivity.Cliente> {
+        val lista = mutableListOf<VencimientosActivity.Cliente>()
+        val db = readableDatabase
+
+        val cursor = db.rawQuery(
+            """
+        SELECT p.nombre || ' ' || p.apellido AS nombre_completo,
+           s.id AS socio_id,
+           p.dni,
+           c.fecha_vencimiento
+        FROM cuotas c
+        JOIN socios s ON c.socio_id = s.id
+        JOIN personas p ON s.persona_id = p.id
+        WHERE c.estado = 'IMPAGA'
+        AND c.fecha_vencimiento <= DATE('now')
+        ORDER BY c.fecha_vencimiento DESC
+        """, null
+        )
+
+        if (cursor.moveToFirst()) {
+            do {
+                val nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre_completo"))
+                val fechaVencimientoBD = cursor.getString(cursor.getColumnIndexOrThrow("fecha_vencimiento"))
+
+                val fechaParts = fechaVencimientoBD.split("-")
+                val fechaVencimiento = if (fechaParts.size == 3) {
+                    "${fechaParts[2]}/${fechaParts[1]}/${fechaParts[0]}"
+                } else {
+                    "N/A"
+                }
+
+                lista.add(
+                    VencimientosActivity.Cliente(
+                        nombre,
+                        esSocio = true,
+                        fechaVencimiento = fechaVencimiento,
+                        fechaRaw = fechaVencimientoBD
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return lista
+    }
 }
+
+

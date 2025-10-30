@@ -17,28 +17,25 @@ import androidx.core.view.WindowInsetsCompat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
-import java.util.Locale
+import com.example.clubdeportivomb.db.ClubDeportivoDBHelper
 
 class VencimientosActivity : AppCompatActivity() {
 
-    data class Cliente(val nombre: String, val esSocio: Boolean, val fechaVencimiento: String)
+    data class Cliente(
+        val nombre: String,
+        val esSocio: Boolean,
+        val fechaVencimiento: String,
+        val fechaRaw: String
+    )
 
     private lateinit var tablaVencimientos: TableLayout
-    private val listaOriginalClientes = listOf(
-        Cliente("Juan Pérez", true, "30/12/2025"),
-        Cliente("Laura Gómez", true, "15/09/2025"),      // <-- VENCIDO
-        Cliente("Marcos Díaz", false, "01/10/2025"),     // <-- VENCIDO
-        Cliente("Ana García", false, "15/11/2025"),
-        Cliente("Carlos Sánchez", true, "25/11/2025"),
-        Cliente("Sofía Rodríguez", false, "N/A"),
-        Cliente("Luis Martínez", true, "01/12/2025")
-    )
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_vencimientos)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -48,50 +45,45 @@ class VencimientosActivity : AppCompatActivity() {
         val iconBack = findViewById<ImageView>(R.id.iconBack)
         tablaVencimientos = findViewById(R.id.tablaVencimientos)
         val searchView = findViewById<SearchView>(R.id.searchView)
-
         iconBack.setOnClickListener { finish() }
 
-        val listaOrdenadaInicial = ordenarLista(listaOriginalClientes)
-        actualizarTabla(listaOrdenadaInicial)
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                searchView.clearFocus()
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                val textoDeBusqueda = newText?.lowercase(Locale.getDefault()) ?: ""
-                val listaFiltrada = if (textoDeBusqueda.isEmpty()) {
-                    listaOriginalClientes
-                } else {
-                    listaOriginalClientes.filter {
-                        it.nombre.lowercase(Locale.getDefault()).contains(textoDeBusqueda)
-                    }
-                }
-                val listaFiltradaYOrdenada = ordenarLista(listaFiltrada)
-                actualizarTabla(listaFiltradaYOrdenada)
-                return true
-            }
-        })
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun ordenarLista(lista: List<Cliente>): List<Cliente> {
+        val dbHelper = ClubDeportivoDBHelper(this)
+        val listaSocios = dbHelper.obtenerSociosConVencimiento()
         val formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        return lista.sortedWith(compareBy { cliente ->
+        val hoy = LocalDate.now()
+
+        val vencidos = mutableListOf<Cliente>()
+        val hoyVencen = mutableListOf<Cliente>()
+
+        for (cliente in listaSocios) {
             try {
-                LocalDate.parse(cliente.fechaVencimiento, formatoFecha)
-            } catch (e: DateTimeParseException) {
-                LocalDate.MAX
+                val fecha = LocalDate.parse(cliente.fechaVencimiento, formatoFecha)
+                when {
+                    fecha.isEqual(hoy) -> hoyVencen.add(cliente)
+                    fecha.isBefore(hoy) -> vencidos.add(cliente)
+                }
+            } catch (_: Exception) { }
+        }
+
+        val cincoVencidos = vencidos.sortedByDescending {
+            LocalDate.parse(it.fechaVencimiento, formatoFecha)
+        }.take(5)
+
+        val listaFinal = hoyVencen + cincoVencidos
+        actualizarTabla(listaFinal)
+
+        // --- Búsqueda ---
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?) = false
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val texto = newText?.trim()?.lowercase() ?: ""
+                val filtrada = listaFinal.filter { it.nombre.lowercase().contains(texto) }
+                actualizarTabla(filtrada)
+                return true
             }
         })
     }
 
-    /**
-     * Limpia la tabla y la vuelve a llenar con una nueva lista de clientes.
-     * Ahora también comprueba si la fecha de vencimiento ha pasado y colorea la fila.
-     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun actualizarTabla(listaClientes: List<Cliente>) {
         val childCount = tablaVencimientos.childCount
@@ -102,29 +94,38 @@ class VencimientosActivity : AppCompatActivity() {
         val formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val hoy = LocalDate.now()
 
-        for (cliente in listaClientes) {
+        // Ordenar: más viejas primero
+        val listaOrdenada = listaClientes.sortedBy { cliente ->
+            try {
+                LocalDate.parse(cliente.fechaVencimiento, formatoFecha)
+            } catch (e: Exception) {
+                LocalDate.MAX
+            }
+        }
+
+        for (cliente in listaOrdenada) {
             val fila = TableRow(this)
             val tvNombre = crearCelda(cliente.nombre)
             val tvTipo = crearCelda(if (cliente.esSocio) "Socio" else "No Socio")
             val tvFecha = crearCelda(cliente.fechaVencimiento, alinearDerecha = true)
 
-            // --- INICIO DE LA LÓGICA DE COLOREADO ---
             try {
                 val fechaVencimiento = LocalDate.parse(cliente.fechaVencimiento, formatoFecha)
-                // Comprueba si la fecha de vencimiento es ANTERIOR a la fecha de hoy
-                if (fechaVencimiento.isBefore(hoy)) {
-                    // Pinta el fondo de la fila de color rojo
-                    fila.setBackgroundColor(ContextCompat.getColor(this, R.color.fila_vencida))
+                when {
+                    fechaVencimiento.isEqual(hoy) -> {
+                        // Rojo si vence hoy
+                        fila.setBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_red_dark))
+                    }
+                    fechaVencimiento.isBefore(hoy) -> {
+                        // Azul si ya venció
+                        fila.setBackgroundColor(ContextCompat.getColor(this, R.color.fila_vencida_azul))
+                    }
                 }
-            } catch (e: DateTimeParseException) {
-                // Si la fecha es "N/A" u otra cosa, no hagas nada y deja el fondo transparente.
-            }
-            // --- FIN DE LA LÓGICA DE COLOREADO ---
+            } catch (_: DateTimeParseException) { }
 
             fila.addView(tvNombre)
             fila.addView(tvTipo)
             fila.addView(tvFecha)
-
             tablaVencimientos.addView(fila)
         }
     }
@@ -135,9 +136,7 @@ class VencimientosActivity : AppCompatActivity() {
         textView.setTextColor(ContextCompat.getColor(this, R.color.white))
         textView.setPadding(8, 8, 8, 8)
         textView.textSize = 14f
-        if (alinearDerecha) {
-            textView.gravity = Gravity.END
-        }
+        if (alinearDerecha) textView.gravity = Gravity.END
         return textView
     }
 }
