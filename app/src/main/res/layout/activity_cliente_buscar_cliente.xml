@@ -154,7 +154,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Botón Buscar Cliente -->
+            <!-- Botón Buscar Cliente - AGREGAR ESTE ID -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBuscarCliente"
                 android:layout_width="200dp"

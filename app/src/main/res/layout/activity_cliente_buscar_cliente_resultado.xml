@@ -116,6 +116,7 @@
                 android:paddingVertical="20dp">
 
                 <TextView
+                    android:id="@+id/tvSeleccionado"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Selecciona un cliente:"
@@ -134,44 +135,133 @@
         </ScrollView>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- ===== BOTONES DE ACCIÓN ===== -->
-    <LinearLayout
+    <!-- ===== GRID DE BOTONES DE ACCIÓN ===== -->
+    <GridLayout
+        android:id="@+id/gridAcciones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="24dp"
+        android:columnCount="2"
+        android:rowCount="3"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp">
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:padding="4dp"
+        android:useDefaultMargins="true">
 
+        <!-- Fila 1 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnModificar"
-            style="@style/Widget.Material3.Button.ElevatedButton"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
             android:text="Modificar"
-            android:textSize="14sp"
+            android:textColor="#FFFFFF"
             android:fontFamily="@font/inria_sans"
             app:backgroundTint="#00BCD4"
-            android:textColor="#FFFFFF"
-            app:cornerRadius="8dp" />
+            app:cornerRadius="8dp"
+            app:icon="@drawable/edit_24"
+            app:iconGravity="textTop"
+            app:iconPadding="4dp"
+            app:iconTint="@color/white" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEliminar"
-            style="@style/Widget.Material3.Button.ElevatedButton"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
             android:text="Eliminar"
-            android:textSize="14sp"
+            android:textColor="#FFFFFF"
             android:fontFamily="@font/inria_sans"
             app:backgroundTint="#FF5252"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/delete_24"
+            app:iconGravity="textTop"
+            app:iconPadding="4dp"
+            app:iconTint="@color/white" />
+
+        <!-- Fila 2 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVer"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:text="Ver"
             android:textColor="#FFFFFF"
-            app:cornerRadius="8dp" />
-    </LinearLayout>
+            android:fontFamily="@font/inria_sans"
+            app:backgroundTint="#3A3672"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/visibility_24"
+            app:iconGravity="textTop"
+            app:iconPadding="4dp"
+            app:iconTint="@color/white" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPagos"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:text="Pagos"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/inria_sans"
+            app:backgroundTint="#3A3672"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/payments_24"
+            app:iconGravity="textTop"
+            app:iconPadding="4dp"
+            app:iconTint="@color/white" />
+
+        <!-- Fila 3 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnActividades"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:text="Actividades"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/inria_sans"
+            app:backgroundTint="#3A3672"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/fitness_center_24"
+            app:iconGravity="textTop"
+            app:iconPadding="4dp"
+            app:iconTint="@color/white" />
+
+        <!-- Cambiado de "Más Resultados" a "Asistencias" -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAsistencias"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:text="Asistencias"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/inria_sans"
+            app:backgroundTint="#3A3672"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/schedule_24"
+            app:iconGravity="textTop"
+            app:iconPadding="4dp"
+            app:iconTint="@color/white" />
+
+    </GridLayout>
 
     <!-- ===== FOOTER ===== -->
     <TextView

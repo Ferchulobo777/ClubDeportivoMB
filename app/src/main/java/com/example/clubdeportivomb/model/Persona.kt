@@ -1,13 +1,13 @@
 package com.example.clubdeportivomb.model
 
-data class Persona(
-    val id: Long,
-    val nombre: String,
-    val apellido: String,
-    val dni: String,
-    val fechaNacimiento: String,
-    val telefono: String,
-    val direccion: String,
-    val email: String,
-    val fechaAlta: String
+abstract class Persona(
+    open val id: Long,
+    open val nombre: String,
+    open val apellido: String,
+    open val dni: String,
+    open val fechaNacimiento: String,
+    open val telefono: String,
+    open val direccion: String,
+    open val email: String,
+    open val fechaAlta: String
 )

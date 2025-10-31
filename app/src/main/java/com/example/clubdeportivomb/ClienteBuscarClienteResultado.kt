@@ -1,5 +1,7 @@
 package com.example.clubdeportivomb
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -8,18 +10,32 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.clubdeportivomb.adapter.ClienteAdapter
 import com.example.clubdeportivomb.databinding.ActivityClienteBuscarClienteResultadoBinding
+import com.example.clubdeportivomb.db.ClubDeportivoDBHelper
+import com.example.clubdeportivomb.model.NoSocio
+import com.example.clubdeportivomb.model.Socio
+import com.example.clubdeportivomb.repository.ClubDeportivoRepository
 import com.example.clubdeportivomb.utils.AppUtils
+import com.example.clubdeportivomb.utils.FileUtils
 import com.google.android.material.button.MaterialButton
 
 class ClienteBuscarClienteResultado : AppCompatActivity() {
 
     private lateinit var binding: ActivityClienteBuscarClienteResultadoBinding
+    private lateinit var repository: ClubDeportivoRepository
+    private lateinit var adapter: ClienteAdapter
+    private var resultadosClientes: List<Any> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClienteBuscarClienteResultadoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Inicializar Repository
+        val dbHelper = ClubDeportivoDBHelper(this)
+        repository = ClubDeportivoRepository(dbHelper)
 
         enableEdgeToEdge()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -42,6 +58,9 @@ class ClienteBuscarClienteResultado : AppCompatActivity() {
         // ANIMACIÓN DE LA PELOTA
         AppUtils.startBallAnimation(binding.imgPelota, this)
 
+        // Configurar RecyclerView
+        configurarRecyclerView()
+
         // Botón volver atrás
         binding.iconBack.setOnClickListener {
             finish()
@@ -49,13 +68,61 @@ class ClienteBuscarClienteResultado : AppCompatActivity() {
 
         // Botones de acción
         binding.btnModificar.setOnClickListener {
-            Toast.makeText(this, "Funcionalidad de Modificar", Toast.LENGTH_SHORT).show()
-            // Aquí puedes agregar la lógica para modificar cliente
+            val clienteSeleccionado = adapter.getClienteSeleccionado()
+            if (clienteSeleccionado != null) {
+                modificarCliente(clienteSeleccionado)
+            } else {
+                Toast.makeText(this, "Seleccione un cliente primero", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnEliminar.setOnClickListener {
-            Toast.makeText(this, "Funcionalidad de Eliminar", Toast.LENGTH_SHORT).show()
-            // Aquí puedes agregar la lógica para eliminar cliente
+            val clienteSeleccionado = adapter.getClienteSeleccionado()
+            if (clienteSeleccionado != null) {
+                mostrarDialogoEliminar(clienteSeleccionado)
+            } else {
+                Toast.makeText(this, "Seleccione un cliente primero", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Botón Ver (Certificado)
+        binding.btnVer.setOnClickListener {
+            val clienteSeleccionado = adapter.getClienteSeleccionado()
+            if (clienteSeleccionado != null) {
+                verCertificado(clienteSeleccionado)
+            } else {
+                Toast.makeText(this, "Seleccione un cliente primero", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Botón Pagos
+        binding.btnPagos.setOnClickListener {
+            val clienteSeleccionado = adapter.getClienteSeleccionado()
+            if (clienteSeleccionado != null) {
+                verPagos(clienteSeleccionado)
+            } else {
+                Toast.makeText(this, "Seleccione un cliente primero", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Botón Actividades
+        binding.btnActividades.setOnClickListener {
+            val clienteSeleccionado = adapter.getClienteSeleccionado()
+            if (clienteSeleccionado != null) {
+                verActividades(clienteSeleccionado)
+            } else {
+                Toast.makeText(this, "Seleccione un cliente primero", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Botón Asistencias
+        binding.btnAsistencias.setOnClickListener {
+            val clienteSeleccionado = adapter.getClienteSeleccionado()
+            if (clienteSeleccionado != null) {
+                verAsistencias(clienteSeleccionado)
+            } else {
+                Toast.makeText(this, "Seleccione un cliente primero", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // FOOTER AYUDA
@@ -63,28 +130,151 @@ class ClienteBuscarClienteResultado : AppCompatActivity() {
             showHelpDialog()
         }
 
-        // === LLAMAR A LA BASE DE DATOS PARA BUSCAR ===
+        // === BUSCAR EN LA BASE DE DATOS ===
         buscarClientesEnDB(textoBusqueda)
+    }
+
+    private fun configurarRecyclerView() {
+        adapter = ClienteAdapter(resultadosClientes) { cliente ->
+            // Actualizar texto de selección
+            val nombreCliente = when (cliente) {
+                is Socio -> "${cliente.nombre} ${cliente.apellido}"
+                is NoSocio -> "${cliente.nombre} ${cliente.apellido}"
+                else -> "Cliente seleccionado"
+            }
+            binding.tvSeleccionado.text = "Seleccionado: $nombreCliente"
+        }
+
+        // Configurar RecyclerView (usando el ID correcto de tu XML)
+        binding.rvClientes.layoutManager = LinearLayoutManager(this)
+        binding.rvClientes.adapter = adapter
     }
 
     // FUNCIÓN PARA BUSCAR EN LA BASE DE DATOS
     private fun buscarClientesEnDB(textoBusqueda: String) {
-        // Aquí implementarás la lógica de búsqueda en la base de datos
-        // Por ahora solo mostramos un mensaje
-        Toast.makeText(this, "Buscando en DB: $textoBusqueda", Toast.LENGTH_SHORT).show()
+        try {
+            resultadosClientes = repository.buscarTodosLosClientes(textoBusqueda)
 
-        // TODO: Cuando tengas la base de datos, implementar la búsqueda real
-        /*
-        val repository = ClubDeportivoRepository(this)
-        val resultados = repository.buscarClientes(textoBusqueda)
-
-        if (resultados.isEmpty()) {
-            Toast.makeText(this, "No se encontraron clientes", Toast.LENGTH_LONG).show()
-        } else {
-            // Configurar el RecyclerView con los resultados
-            configurarRecyclerView(resultados)
+            if (resultadosClientes.isEmpty()) {
+                binding.titleResultadoBusquedaCliente.text = "No se encontraron resultados para: $textoBusqueda"
+                binding.tvSeleccionado.text = "No hay clientes para mostrar"
+                Toast.makeText(this, "No se encontraron clientes", Toast.LENGTH_LONG).show()
+            } else {
+                val cantidadResultados = resultadosClientes.size
+                binding.titleResultadoBusquedaCliente.text = "Encontrados $cantidadResultados resultados para: $textoBusqueda"
+                binding.tvSeleccionado.text = "Selecciona un cliente:"
+                adapter.actualizarDatos(resultadosClientes)
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error al buscar clientes", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
         }
-        */
+    }
+
+    private fun modificarCliente(cliente: Any) {
+        when (cliente) {
+            is Socio -> {
+                val intent = Intent(this, ModificarClienteSocioFormulario::class.java).apply {
+                    putExtra("SOCIO_ID", cliente.id)
+                    putExtra("NOMBRE_USUARIO", intent.getStringExtra("NOMBRE_USUARIO"))
+                    putExtra("ROL_USUARIO", intent.getStringExtra("ROL_USUARIO"))
+                }
+                startActivity(intent)
+            }
+            is NoSocio -> {
+                val intent = Intent(this, ModificarClienteNoSocioFormulario::class.java).apply {
+                    putExtra("NO_SOCIO_ID", cliente.id)
+                    putExtra("NOMBRE_USUARIO", intent.getStringExtra("NOMBRE_USUARIO"))
+                    putExtra("ROL_USUARIO", intent.getStringExtra("ROL_USUARIO"))
+                }
+                startActivity(intent)
+            }
+        }
+    }
+
+    private fun mostrarDialogoEliminar(cliente: Any) {
+        val nombreCliente = when (cliente) {
+            is Socio -> "${cliente.nombre} ${cliente.apellido}"
+            is NoSocio -> "${cliente.nombre} ${cliente.apellido}"
+            else -> "este cliente"
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle("Eliminar Cliente")
+            .setMessage("¿Está seguro que desea eliminar a $nombreCliente?")
+            .setPositiveButton("Eliminar") { _, _ ->
+                eliminarCliente(cliente)
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun eliminarCliente(cliente: Any) {
+        // TODO: Implementar lógica de eliminación
+        val nombreCliente = when (cliente) {
+            is Socio -> "${cliente.nombre} ${cliente.apellido}"
+            is NoSocio -> "${cliente.nombre} ${cliente.apellido}"
+            else -> "Cliente"
+        }
+        Toast.makeText(this, "Eliminando a $nombreCliente...", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun verCertificado(cliente: Any) {
+        val nombreCertificado = when (cliente) {
+            is Socio -> cliente.certificado
+            is NoSocio -> cliente.certificado
+            else -> null
+        }
+
+        if (nombreCertificado != null && nombreCertificado.isNotEmpty()) {
+            val certificadoUri = FileUtils.obtenerCertificado(this, nombreCertificado)
+            if (certificadoUri != null) {
+                // Abrir el certificado con una app compatible
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    setDataAndType(certificadoUri, "application/pdf")
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "No hay aplicación para abrir PDF", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Certificado no encontrado", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "El cliente no tiene certificado cargado", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun verPagos(cliente: Any) {
+        val dni = when (cliente) {
+            is Socio -> cliente.dni
+            is NoSocio -> cliente.dni
+            else -> ""
+        }
+        Toast.makeText(this, "Mostrando pagos de DNI: $dni", Toast.LENGTH_SHORT).show()
+        // TODO: Implementar navegación a pantalla de pagos
+    }
+
+    private fun verActividades(cliente: Any) {
+        val nombreCliente = when (cliente) {
+            is Socio -> "${cliente.nombre} ${cliente.apellido}"
+            is NoSocio -> "${cliente.nombre} ${cliente.apellido}"
+            else -> "Cliente"
+        }
+        Toast.makeText(this, "Mostrando actividades de $nombreCliente", Toast.LENGTH_SHORT).show()
+        // TODO: Implementar navegación a pantalla de actividades
+    }
+
+    private fun verAsistencias(cliente: Any) {
+        val nombreCliente = when (cliente) {
+            is Socio -> "${cliente.nombre} ${cliente.apellido}"
+            is NoSocio -> "${cliente.nombre} ${cliente.apellido}"
+            else -> "Cliente"
+        }
+        Toast.makeText(this, "Mostrando asistencias de $nombreCliente", Toast.LENGTH_SHORT).show()
+        // TODO: Implementar navegación a pantalla de asistencias
     }
 
     // Botón físico BACK - vuelve directamente

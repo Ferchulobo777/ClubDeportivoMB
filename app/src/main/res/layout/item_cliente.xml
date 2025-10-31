@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardCliente"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:strokeColor="@android:color/transparent"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/bg_card_cliente">
+
+        <!-- Fila 1: Nombre y Tipo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvNombre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nombre Apellido"
+                android:textColor="#1D1B41"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/inria_sans" />
+
+            <TextView
+                android:id="@+id/tvTipo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SOCIO"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:background="@drawable/bg_tipo_cliente"
+                android:fontFamily="@font/inria_sans" />
+
+        </LinearLayout>
+
+        <!-- Fila 2: DNI -->
+        <TextView
+            android:id="@+id/tvDni"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="DNI: 12345678"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            android:fontFamily="@font/inria_sans" />
+
+        <!-- Fila 3: Certificado -->
+        <TextView
+            android:id="@+id/tvCertificado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="✓ Certificado"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            android:fontFamily="@font/inria_sans" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

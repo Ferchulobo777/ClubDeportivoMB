@@ -1,8 +1,14 @@
 package com.example.clubdeportivomb.model
 
 data class NoSocio(
-    val id: Long,
-    val personaId: Long,
-    val certificado: String,
-    val fechaAlta: String
-)
+    override val id: Long,
+    override val nombre: String,
+    override val apellido: String,
+    override val dni: String,
+    override val fechaNacimiento: String,
+    override val telefono: String,
+    override val direccion: String,
+    override val email: String,
+    override val fechaAlta: String,
+    val certificado: String?  // Opcional para NoSocio
+) : Persona(id, nombre, apellido, dni, fechaNacimiento, telefono, direccion, email, fechaAlta)

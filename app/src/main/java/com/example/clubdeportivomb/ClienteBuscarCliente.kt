@@ -10,17 +10,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.clubdeportivomb.databinding.ActivityClienteBuscarClienteBinding
+import com.example.clubdeportivomb.db.ClubDeportivoDBHelper
+import com.example.clubdeportivomb.repository.ClubDeportivoRepository // ✅ Asegúrate de tener este import
 import com.example.clubdeportivomb.utils.AppUtils
 import com.google.android.material.button.MaterialButton
 
 class ClienteBuscarCliente : AppCompatActivity() {
 
     private lateinit var binding: ActivityClienteBuscarClienteBinding
+    private lateinit var repository: ClubDeportivoRepository // ✅ Declarar repository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClienteBuscarClienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // ✅ INICIALIZAR REPOSITORY
+        val dbHelper = ClubDeportivoDBHelper(this)
+        repository = ClubDeportivoRepository(dbHelper)
 
         enableEdgeToEdge()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -50,6 +57,9 @@ class ClienteBuscarCliente : AppCompatActivity() {
             if (textoBusqueda.isEmpty()) {
                 Toast.makeText(this, "Ingrese un nombre o DNI para buscar", Toast.LENGTH_SHORT).show()
             } else {
+                // ✅ OPCIONAL: Puedes hacer una búsqueda rápida aquí para validar
+                // val resultados = repository.buscarSocios(textoBusqueda) // Esto debería funcionar ahora
+
                 // Navegar a la pantalla de resultados
                 val intent = Intent(this, ClienteBuscarClienteResultado::class.java)
                 // Pasar los datos de búsqueda y del usuario

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.example.clubdeportivomb.repository.ClubDeportivoRepository
+import com.example.clubdeportivomb.db.ClubDeportivoDBHelper
 import com.example.clubdeportivomb.model.Usuario
 import java.security.MessageDigest
 import androidx.activity.addCallback
@@ -22,7 +23,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        repository = ClubDeportivoRepository(this)
+        // ✅ CORREGIDO: Crear instancia del DBHelper primero
+        val dbHelper = ClubDeportivoDBHelper(this)
+        repository = ClubDeportivoRepository(dbHelper)
 
         // Configuración normal de ventana - CONTROLES VISIBLES
         // Se eliminó el modo inmersivo que ocultaba los controles
@@ -49,14 +52,20 @@ class LoginActivity : AppCompatActivity() {
             }
 
             val passwordHash = password.hashCode().toString()
-            val usuario: Usuario? = repository.obtenerUsuario(username, passwordHash)
+            // ✅ CORREGIDO: Usar el método correcto del repository
+            val usuario: Usuario? = repository.obtenerUsuarioPorUsername(username)
 
             if (usuario != null) {
-                when (usuario.rol) {
-                    "Administración", "Profesores", "Nutricionistas" -> {
-                        openHome(usuario.username, usuario.rol)
+                // Verificar contraseña (comparar el hash)
+                if (passwordHash == usuario.passwordHash) {
+                    when (usuario.rol) {
+                        "Administración", "Profesores", "Nutricionistas" -> {
+                            openHome(usuario.username, usuario.rol)
+                        }
+                        else -> Toast.makeText(this, "Rol no reconocido", Toast.LENGTH_SHORT).show()
                     }
-                    else -> Toast.makeText(this, "Rol no reconocido", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()

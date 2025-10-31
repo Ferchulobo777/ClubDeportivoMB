@@ -337,8 +337,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="home_24dp" />
-                            <entry key="sourceFile" value="C:\Users\Notebook\AndroidStudioProjects\ClubDeportivoMB\app\src\main\res\drawable\home_24dp.svg" />
+                            <entry key="outputName" value="schedule_24" />
+                            <entry key="sourceFile" value="C:\Users\Notebook\AndroidStudioProjects\ClubDeportivoMB\app\src\main\res\drawable\schedule_24.svg" />
                           </map>
                         </option>
                       </PersistentState>

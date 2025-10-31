@@ -3,127 +3,62 @@ package com.example.clubdeportivomb
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.clubdeportivomb.databinding.ActivityRegistroUsuarioBinding
+import com.example.clubdeportivomb.db.ClubDeportivoDBHelper
 import com.example.clubdeportivomb.repository.ClubDeportivoRepository
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import java.util.Calendar
-import android.widget.ImageView
-
 
 class RegistroUsuarioActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityRegistroUsuarioBinding
     private lateinit var repository: ClubDeportivoRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registro_usuario)
+        binding = ActivityRegistroUsuarioBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // === Inicializar Repositorio (maneja la BD)
-        repository = ClubDeportivoRepository(this)
+        // ✅ CORREGIDO: Crear instancia del DBHelper primero
+        val dbHelper = ClubDeportivoDBHelper(this)
+        repository = ClubDeportivoRepository(dbHelper)
 
-        // === Referencias a los campos del formulario ===
-        val etNombre = findViewById<EditText>(R.id.etNombre)
-        val etApellido = findViewById<EditText>(R.id.etApellido)
-        val etFechaNacimiento = findViewById<EditText>(R.id.etFechaNacimiento)
-        val etDni = findViewById<EditText>(R.id.etDni)
-        val etTelefono = findViewById<EditText>(R.id.etTelefono)
-        val etEmail = findViewById<EditText>(R.id.etEmail)
-        val etDireccion = findViewById<EditText>(R.id.etDireccion)
-        val etFechaInscripcion = findViewById<EditText>(R.id.etFechaInscripcion)
-        val etUsuario = findViewById<EditText>(R.id.etUsuario)
-        val etContrasena = findViewById<EditText>(R.id.etContrasena)
-        val etConfirmarContrasena = findViewById<EditText>(R.id.etConfirmarContrasena)
-        val autoCompleteArea = findViewById<MaterialAutoCompleteTextView>(R.id.autoCompleteArea)
+        // Configurar DatePickers
+        setupDatePickers()
 
-        val btnRegistrar = findViewById<Button>(R.id.btnRegistrar)
-        val btnCancelar = findViewById<Button>(R.id.btnCancelar)
-        val tvIniciaSesion = findViewById<TextView>(R.id.tvIniciaSesion)
-        val iconBack = findViewById<ImageView>(R.id.iconBack)
+        binding.btnRegistrar.setOnClickListener {
+            val nombre = binding.etNombre.text.toString().trim()
+            val apellido = binding.etApellido.text.toString().trim()
+            val dni = binding.etDni.text.toString().trim()
+            val fechaNacimiento = binding.etFechaNacimiento.text.toString().trim()
+            val telefono = binding.etTelefono.text.toString().trim()
+            val direccion = binding.etDireccion.text.toString().trim()
+            val email = binding.etEmail.text.toString().trim()
+            // ✅ CORREGIDO: Usar etFechaInscripcion que existe en el XML
+            val fechaAlta = binding.etFechaInscripcion.text.toString().trim()
+            // ✅ CORREGIDO: Usar etUsuario que existe en el XML
+            val username = binding.etUsuario.text.toString().trim()
+            // ✅ CORREGIDO: Usar etContrasena que existe en el XML
+            val password = binding.etContrasena.text.toString().trim()
+            // ✅ CORREGIDO: Usar autoCompleteArea que existe en el XML
+            val rol = binding.autoCompleteArea.text.toString().trim()
 
-        // === Poblamos las áreas (dropdown)
-        val areas = resources.getStringArray(R.array.areas_array)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, areas)
-        autoCompleteArea.setAdapter(adapter)
-
-
-
-
-        // === Botones de navegación ===
-        btnCancelar.setOnClickListener {
-            finish() // simplemente cierra el activity
-        }
-
-        tvIniciaSesion.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
-
-        iconBack.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
-
-        // === DatePickers para fechas ===
-        val calendar = Calendar.getInstance()
-
-        etFechaNacimiento.setOnClickListener {
-            DatePickerDialog(
-                this,
-                { _, year, month, day ->
-                    etFechaNacimiento.setText("$day/${month + 1}/$year")
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }
-
-        etFechaInscripcion.setOnClickListener {
-            DatePickerDialog(
-                this,
-                { _, year, month, day ->
-                    etFechaInscripcion.setText("$day/${month + 1}/$year")
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }
-
-        // === Lógica de registro ===
-        btnRegistrar.setOnClickListener {
-            val nombre = etNombre.text.toString().trim()
-            val apellido = etApellido.text.toString().trim()
-            val fechaNacimiento = etFechaNacimiento.text.toString().trim()
-            val dni = etDni.text.toString().trim()
-            val telefono = etTelefono.text.toString().trim()
-            val direccion = etDireccion.text.toString().trim()
-            val email = etEmail.text.toString().trim()
-            val fechaAlta = etFechaInscripcion.text.toString().trim()
-            val usuario = etUsuario.text.toString().trim()
-            val contrasena = etContrasena.text.toString().trim()
-            val confirmarContrasena = etConfirmarContrasena.text.toString().trim()
-            val area = autoCompleteArea.text.toString().trim()
-
-
-
-            if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() ||
-                usuario.isEmpty() || contrasena.isEmpty() || confirmarContrasena.isEmpty()) {
+            if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() || username.isEmpty() || password.isEmpty() || rol.isEmpty()) {
                 Toast.makeText(this, "Complete todos los campos obligatorios", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-
-
-
-            if (contrasena != confirmarContrasena) {
+            // Validar que las contraseñas coincidan
+            val confirmarPassword = binding.etConfirmarContrasena.text.toString().trim()
+            if (password != confirmarPassword) {
                 Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // 1️⃣ Insertar persona
-            val personaId = repository.insertarPersona(
+            val passwordHash = password.hashCode().toString()
+
+            val usuarioId = repository.insertarUsuarioCompleto(
                 nombre = nombre,
                 apellido = apellido,
                 dni = dni,
@@ -131,33 +66,67 @@ class RegistroUsuarioActivity : AppCompatActivity() {
                 telefono = telefono,
                 direccion = direccion,
                 email = email,
-                fechaAlta = fechaAlta
-            )
-
-            if (personaId == -1L) {
-                Toast.makeText(this, "Error al registrar persona", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            // 2️⃣ Insertar usuario
-            val passwordHash = contrasena.hashCode().toString() // ejemplo simple
-            val usuarioId = repository.insertarUsuario(
-                username = usuario,
+                fechaAlta = fechaAlta,
+                username = username,
                 passwordHash = passwordHash,
-                rol = area, // acá podés usar el área o un rol fijo
-                personaId = personaId
+                rol = rol
             )
 
-            if (usuarioId == -1L) {
-                Toast.makeText(this, "Error al crear usuario", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            if (usuarioId != -1L) {
+                Toast.makeText(this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(this, "Error al registrar usuario", Toast.LENGTH_SHORT).show()
             }
+        }
 
-            Toast.makeText(this, "Usuario registrado correctamente ✅", Toast.LENGTH_LONG).show()
-
-            // Redirige al login
-            startActivity(Intent(this, LoginActivity::class.java))
+        // ✅ CORREGIDO: Usar tvIniciaSesion que existe en el XML
+        binding.tvIniciaSesion.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
             finish()
+        }
+
+        // ✅ CORREGIDO: Usar btnCancelar que existe en el XML
+        binding.btnCancelar.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        // ✅ CORREGIDO: Usar iconBack que existe en el XML
+        binding.iconBack.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun setupDatePickers() {
+        val calendar = Calendar.getInstance()
+
+        binding.etFechaNacimiento.setOnClickListener {
+            DatePickerDialog(
+                this,
+                { _, year, month, day ->
+                    binding.etFechaNacimiento.setText("$day/${month + 1}/$year")
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+        binding.etFechaInscripcion.setOnClickListener {
+            DatePickerDialog(
+                this,
+                { _, year, month, day ->
+                    binding.etFechaInscripcion.setText("$day/${month + 1}/$year")
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
         }
     }
 }
