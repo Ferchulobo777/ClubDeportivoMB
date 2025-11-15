@@ -54,7 +54,7 @@ class PagosActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        findViewById<MaterialButton>(R.id.btnReportes).setOnClickListener {
+        findViewById<MaterialButton>(R.id.btnListadoCuotas).setOnClickListener {
             //Toast.makeText(this, "Reportes", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, VencimientosActivity::class.java)
             intent.putExtra("NOMBRE_USUARIO", nombreUsuario)

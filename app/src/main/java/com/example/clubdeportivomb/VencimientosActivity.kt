@@ -42,6 +42,14 @@ class VencimientosActivity : AppCompatActivity() {
             insets
         }
 
+        // Obtener datos del usuario
+        val nombreUsuario = intent.getStringExtra("NOMBRE_USUARIO") ?: "Usuario"
+        val rolUsuario = intent.getStringExtra("ROL_USUARIO") ?: "Invitado"
+
+        // Configurar header con findViewById
+        val tvUsuario = findViewById<TextView>(R.id.tvUsuario)
+        tvUsuario.text = "$nombreUsuario - $rolUsuario"
+
         val iconBack = findViewById<ImageView>(R.id.iconBack)
         tablaVencimientos = findViewById(R.id.tablaVencimientos)
         val searchView = findViewById<SearchView>(R.id.searchView)
