@@ -27,7 +27,8 @@
             android:textColor="#FFFFFF"
             android:textSize="32sp"
             android:textStyle="bold"
-            android:fontFamily="@font/inria_sans" />
+            android:fontFamily="@font/inria_sans"
+            tools:ignore="NotSibling" />
 
         <ImageView
             android:id="@+id/iconBack"

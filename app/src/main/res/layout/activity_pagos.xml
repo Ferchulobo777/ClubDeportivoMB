@@ -53,7 +53,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/chevron_backward_24"
-            android:tint="#FFFFFF" />
+            app:tint="#FFFFFF" />
 
     </RelativeLayout>
 
@@ -150,16 +150,16 @@
                     app:iconTint="@color/white"
                     android:backgroundTint="#1D1B41" />
 
-                <!-- Consultar Estado -->
+                <!-- Listado cuotas -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnConsultarEstado"
+                    android:id="@+id/btnListadoCuotas"
                     style="@style/Widget.Material3.Button.ElevatedButton"
                     android:layout_width="0dp"
                     android:layout_height="120dp"
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:layout_margin="8dp"
-                    android:text="Consultar Estado"
+                    android:text="Listado de Cuotas vencidas"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
                     android:fontFamily="@font/inria_sans"

@@ -93,18 +93,18 @@ class HomeActivity : AppCompatActivity() {
             showAboutDialog()
         }
 
-        // Listener para "¿Necesitas ayuda?" - ABRE EL MODAL PERSONALIZADO
+        // Listener para "¿Necesitas ayuda?"
         tvAyuda.setOnClickListener {
             showHelpDialog()
         }
     }
 
-    // Botón físico BACK - también muestra el modal de CERRAR SESIÓN
+    // Botón físico BACK
     override fun onBackPressed() {
         showLogoutDialog()
     }
 
-    // FUNCIÓN PARA MOSTRAR EL MODAL DE CERRAR SESIÓN (vuelve al Login)
+    // FUNCIÓN PARA MOSTRAR EL MODAL DE CERRAR SESIÓN
     private fun showLogoutDialog() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_modal_cerrar_sesion, null)
 

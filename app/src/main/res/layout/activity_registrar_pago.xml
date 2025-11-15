@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="#1D1B41"
     android:padding="18dp"
-    tools:context=".RegistrarPago">
+    tools:context=".RegistrarPagoActivity">
 
     <!-- ===== ENCABEZADO ===== -->
     <RelativeLayout

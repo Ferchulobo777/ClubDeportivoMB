@@ -23,12 +23,12 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // ✅ CORREGIDO: Crear instancia del DBHelper primero
+        //  Crear instancia del DBHelper primero
         val dbHelper = ClubDeportivoDBHelper(this)
         repository = ClubDeportivoRepository(dbHelper)
 
         // Configuración normal de ventana - CONTROLES VISIBLES
-        // Se eliminó el modo inmersivo que ocultaba los controles
+
 
         // Referencias
         val tvRegistro = findViewById<TextView>(R.id.tvRegistro)
@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             val passwordHash = password.hashCode().toString()
-            // ✅ CORREGIDO: Usar el método correcto del repository
+            //  Usar el método correcto del repository
             val usuario: Usuario? = repository.obtenerUsuarioPorUsername(username)
 
             if (usuario != null) {
@@ -72,9 +72,9 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        // Confirmación al presionar atrás - USA TU MODAL PERSONALIZADO
+        // Confirmación al presionar atrás
         onBackPressedDispatcher.addCallback(this) {
-            showExitDialog()  // ← Cambiado para usar tu modal personalizado
+            showExitDialog()
         }
     }
 
@@ -116,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    // Función para generar hash SHA-256 (por si querés usarlo)
+    // Función para generar hash SHA-256
     private fun sha256(input: String): String {
         val digest = MessageDigest.getInstance("SHA-256")
         val hashBytes = digest.digest(input.toByteArray(Charsets.UTF_8))

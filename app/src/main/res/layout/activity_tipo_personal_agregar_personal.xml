@@ -76,7 +76,7 @@
                 android:layout_height="32dp"
                 android:src="@drawable/soccer_ball" />
 
-            <!-- Texto Bienvenido/a a la derecha de la pelota -->
+            <!-- Texto Bienvenido-->
             <TextView
                 android:id="@+id/title_tipo_personal_agregar"
                 android:layout_width="wrap_content"

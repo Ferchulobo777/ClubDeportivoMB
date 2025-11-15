@@ -55,7 +55,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="20dp"
-        android:text="Control de Acceso"
+        android:text="Vencimiento de Cuotas"
         android:textColor="#FFFFFF"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -71,7 +71,7 @@
         android:iconifiedByDefault="false"
         android:background="@drawable/search_view_background"
         app:iconifiedByDefault="false"
-        app:queryBackground="@android:color/transparent"
+        app:queryBackground="@android:color/white"
         app:searchIcon="@drawable/baseline_search_24"
         android:layoutDirection="rtl"
         android:textAlignment="viewStart"/>
