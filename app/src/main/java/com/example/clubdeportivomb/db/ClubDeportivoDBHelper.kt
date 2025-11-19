@@ -359,119 +359,119 @@ class ClubDeportivoDBHelper(context: Context) :
                 nutricionistaIds.add(db.insert("nutricionistas", null, cv))
             }
 
-            // ACTIVIDADES
-            val dias = listOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes")
-            val horas = listOf("18:00", "19:00", "20:00", "21:00")
-            val salones = listOf(
-                "AZUL",
-                "VERDE",
-                "ROJO",
-                "AMARILLO",
-                "VIOLETA",
-                "NARANJA",
-                "NEGRO",
-                "GRIS",
-                "BLANCO",
-                "CELESTE"
-            )
+          // ACTIVIDADES
+val dias = listOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes")
+val horas = listOf("18:00", "19:00", "20:00", "21:00")
+val salones = listOf(
+    "AZUL",
+    "VERDE",
+    "ROJO",
+    "AMARILLO",
+    "VIOLETA",
+    "NARANJA",
+    "NEGRO",
+    "GRIS",
+    "BLANCO",
+    "CELESTE"
+)
 
-            val actividadIds = mutableListOf<Long>()
-            for (i in 0 until 10) {
-                val cv = ContentValues().apply {
-                    put("nombre", "Actividad ${i + 1}")
-                    put("descripcion", "Entrenamiento ${especialidades[i]} nivel ${i + 1}")
-                    put("cupo_maximo", 20 + i)
-                    put("dia", dias[i % dias.size])
-                    put("hora", horas[i % horas.size])
-                    put("salon", salones[i % salones.size])
-                    put("profesor_id", profesorIds[i % profesorIds.size])
-                }
-                actividadIds.add(db.insert("actividades", null, cv))
-            }
+val actividadIds = mutableListOf<Long>()
+for (i in 0 until 10) {
+    val cv = ContentValues().apply {
+        put("nombre", "Actividad ${i + 1}")
+        put("descripcion", "Entrenamiento ${especialidades[i]} nivel ${i + 1}")
+        put("cupo_maximo", 20 + i)
+        put("dia", dias[i % dias.size])
+        put("hora", horas[i % horas.size])
+        put("salon", salones[i % salones.size])
+        put("profesor_id", profesorIds[i % profesorIds.size])
+    }
+    actividadIds.add(db.insert("actividades", null, cv))
+}
 
-            // PARTICIPANTES
-            for (i in 0 until 10) {
-                val cvSocio = ContentValues().apply {
-                    put("actividad_id", actividadIds[i])
-                    put("persona_id", personaIds[i])
-                    put("tipo_afiliado", if (i % 2 == 0) "SOCIO" else "NO SOCIO")
-                    put("fecha_inscripcion", "2025-03-${10 + i}")
-                }
-                db.insert("actividad_participantes", null, cvSocio)
-            }
+// PARTICIPANTES
+for (i in 0 until 10) {
+    val cvSocio = ContentValues().apply {
+        put("actividad_id", actividadIds[i])
+        put("persona_id", personaIds[i])
+        put("tipo_afiliado", if (i % 2 == 0) "SOCIO" else "NO SOCIO")
+        put("fecha_inscripcion", "2025-03-${10 + i}")
+    }
+    db.insert("actividad_participantes", null, cvSocio)
+}
 
-            // PAGOS
-            for (i in 0 until 10) {
-                val cv = ContentValues().apply {
-                    put("dni_cliente", "40000${100 + i}")
-                    put("actividad", "Fútbol")
-                    put("horario", "18:00")
-                    put("tipo_cuota", "Mensual")
-                    put("medio_pago", if (i % 2 == 0) "Efectivo" else "Transferencia")
-                    put("importe", 20000 + (i * 100))
-                    put("fecha_pago", "2025-03-${10 + i}")
-                }
-                db.insert("pagos", null, cv)
-            }
-
-
-            // CUOTAS (5 vencidas y 5 pagas)
-            for (i in 0 until 10) {
-                val cv = ContentValues().apply {
-                    put("socio_id", i + 1) // los socios van del 1 al 10
-                    // Alternamos: los primeros 5 vencidos, los otros 5 pagos
-                    if (i < 5) {
-                        put("fecha_vencimiento", "2025-11-01") // vencidos
-                        put("fecha_pago", null as String?)
-                        put("monto", 5000 + i * 100)
-                        put("estado", "IMPAGA")
-                    } else {
-                        put("fecha_vencimiento", "2025-12-15") // todavía vigente
-                        put("fecha_pago", "2025-10-15")
-                        put("monto", 5000 + i * 100)
-                        put("estado", "PAGA")
-                    }
-                }
-                db.insert("cuotas", null, cv)
-            }
+// PAGOS
+for (i in 0 until 10) {
+    val cv = ContentValues().apply {
+        put("dni_cliente", "40000${100 + i}")
+        put("actividad", "Fútbol")
+        put("horario", "18:00")
+        put("tipo_cuota", "Mensual")
+        put("medio_pago", if (i % 2 == 0) "Efectivo" else "Transferencia")
+        put("importe", 20000 + (i * 100))
+        put("fecha_pago", "2025-03-${10 + i}")
+    }
+    db.insert("pagos", null, cv)
+}
 
 
-            /// Agregar 2 cuotas con vencimiento HOY
-            val dateFormat =
-                java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
-            val hoy = dateFormat.format(java.util.Date())
-
-            // Eliminamos posibles cuotas previas con la misma fecha
-            db.delete("cuotas", "fecha_vencimiento = ?", arrayOf(hoy))
-
-            // Insertamos 2 socios con vencimiento hoy
-            for (i in 1..2) {
-                val cv = ContentValues().apply {
-                    put("socio_id", i) // usa los primeros dos socios creados
-                    put("fecha_vencimiento", hoy)
-                    put("fecha_pago", null as String?)
-                    put("monto", 6000)
-                    put("estado", "IMPAGA")
-                }
-                db.insert("cuotas", null, cv)
-            }
-
-            Log.d("DBHelper", "Se agregaron 2 cuotas con vencimiento $hoy")
-        } catch (e: Exception) {
-            Log.e("DBHelper", "Error al insertar datos dummy", e)
+// CUOTAS (5 vencidas y 5 pagas)
+for (i in 0 until 10) {
+    val cv = ContentValues().apply {
+        put("socio_id", i + 1) // los socios van del 1 al 10
+        // Alternamos: los primeros 5 vencidos, los otros 5 pagos
+        if (i < 5) {
+            put("fecha_vencimiento", "2025-11-01") // vencidos
+            put("fecha_pago", null as String?)
+            put("monto", 5000 + i * 100)
+            put("estado", "IMPAGA")
+        } else {
+            put("fecha_vencimiento", "2025-12-15") // todavía vigente
+            put("fecha_pago", "2025-10-15")
+            put("monto", 5000 + i * 100)
+            put("estado", "PAGA")
         }
     }
+    db.insert("cuotas", null, cv)
+}
+
+
+/// Agregar 2 cuotas con vencimiento HOY
+val dateFormat =
+    java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+val hoy = dateFormat.format(java.util.Date())
+
+// Eliminamos posibles cuotas previas con la misma fecha
+db.delete("cuotas", "fecha_vencimiento = ?", arrayOf(hoy))
+
+// Insertamos 2 socios con vencimiento hoy
+for (i in 1..2) {
+    val cv = ContentValues().apply {
+        put("socio_id", i) // usa los primeros dos socios creados
+        put("fecha_vencimiento", hoy)
+        put("fecha_pago", null as String?)
+        put("monto", 6000)
+        put("estado", "IMPAGA")
+    }
+    db.insert("cuotas", null, cv)
+}
+
+Log.d("DBHelper", "Se agregaron 2 cuotas con vencimiento $hoy")
+} catch (e: Exception) {
+    Log.e("DBHelper", "Error al insertar datos dummy", e)
+}
+}
 
 
 // Obtener socios con cuota vencida
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun obtenerSociosConVencimiento(): List<VencimientosActivity.Cliente> {
-        val lista = mutableListOf<VencimientosActivity.Cliente>()
-        val db = readableDatabase
+@RequiresApi(Build.VERSION_CODES.O)
+fun obtenerSociosConVencimiento(): List<VencimientosActivity.Cliente> {
+    val lista = mutableListOf<VencimientosActivity.Cliente>()
+    val db = readableDatabase
 
-        val cursor = db.rawQuery(
-            """
+    val cursor = db.rawQuery(
+        """
         SELECT p.nombre || ' ' || p.apellido AS nombre_completo,
            s.id AS socio_id,
            p.dni,
@@ -483,93 +483,88 @@ class ClubDeportivoDBHelper(context: Context) :
         AND c.fecha_vencimiento <= DATE('now')
         ORDER BY c.fecha_vencimiento DESC
         """, null
-        )
+    )
 
-        if (cursor.moveToFirst()) {
-            do {
-                val nombre =
-                    cursor.getString(cursor.getColumnIndexOrThrow("nombre_completo"))
-                val fechaVencimientoBD =
-                    cursor.getString(cursor.getColumnIndexOrThrow("fecha_vencimiento"))
+    if (cursor.moveToFirst()) {
+        do {
+            val nombre =
+                cursor.getString(cursor.getColumnIndexOrThrow("nombre_completo"))
+            val fechaVencimientoBD =
+                cursor.getString(cursor.getColumnIndexOrThrow("fecha_vencimiento"))
 
-                val fechaParts = fechaVencimientoBD.split("-")
-                val fechaVencimiento = if (fechaParts.size == 3) {
-                    "${fechaParts[2]}/${fechaParts[1]}/${fechaParts[0]}"
-                } else {
-                    "N/A"
-                }
+            val fechaVencimiento = fechaVencimientoBD
 
-                lista.add(
-                    VencimientosActivity.Cliente(
-                        nombre,
-                        esSocio = true,
-                        fechaVencimiento = fechaVencimiento,
-                        fechaRaw = fechaVencimientoBD
-                    )
+            lista.add(
+                VencimientosActivity.Cliente(
+                    nombre,
+                    esSocio = true,
+                    fechaVencimiento = fechaVencimiento,
+                    fechaRaw = fechaVencimientoBD
                 )
-            } while (cursor.moveToNext())
-        }
-
-        cursor.close()
-        db.close()
-        return lista
+            )
+        } while (cursor.moveToNext())
     }
 
-    //buscar por dni
-    fun buscarPersonaPorDNI(dni: String): Persona? {
-        val db = readableDatabase
+    cursor.close()
+    db.close()
+    return lista
+}
 
-        val cursor = db.rawQuery(
-            """
+//buscar por dni
+fun buscarPersonaPorDNI(dni: String): Persona? {
+    val db = readableDatabase
+
+    val cursor = db.rawQuery(
+        """
         SELECT id, nombre, apellido 
         FROM personas
         WHERE dni = ?
         """,
-            arrayOf(dni)
-        )
-
-        val persona = if (cursor.moveToFirst()) {
-            Persona(
-                id = cursor.getInt(cursor.getColumnIndexOrThrow("id")),
-                nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
-                apellido = cursor.getString(cursor.getColumnIndexOrThrow("apellido"))
-            )
-        } else null
-
-        cursor.close()
-        return persona
-    }
-
-    data class Persona(
-        val id: Int,
-        val nombre: String,
-        val apellido: String
+        arrayOf(dni)
     )
 
-    //Registrar un pago
-    fun registrarPago(
-        dni: String,
-        actividad: String,
-        horario: String,
-        tipoCuota: String,
-        medioPago: String,
-        importe: Double,
-        fechaPago: String
-    ): Long {
+    val persona = if (cursor.moveToFirst()) {
+        Persona(
+            id = cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+            nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
+            apellido = cursor.getString(cursor.getColumnIndexOrThrow("apellido"))
+        )
+    } else null
 
-        val db = writableDatabase
-        val values = ContentValues().apply {
-            put("dni_cliente", dni)
-            put("actividad", actividad)
-            put("horario", horario)
-            put("tipo_cuota", tipoCuota)
-            put("medio_pago", medioPago)
-            put("importe", importe)
-            put("fecha_pago", fechaPago)
-        }
+    cursor.close()
+    return persona
+}
 
-        return db.insert("pagos", null, values)
+data class Persona(
+    val id: Int,
+    val nombre: String,
+    val apellido: String
+)
+
+//Registrar un pago
+fun registrarPago(
+    dni: String,
+    actividad: String,
+    horario: String,
+    tipoCuota: String,
+    medioPago: String,
+    importe: Double,
+    fechaPago: String
+): Long {
+
+    val db = writableDatabase
+    val values = ContentValues().apply {
+        put("dni_cliente", dni)
+        put("actividad", actividad)
+        put("horario", horario)
+        put("tipo_cuota", tipoCuota)
+        put("medio_pago", medioPago)
+        put("importe", importe)
+        put("fecha_pago", fechaPago)
     }
+
+    return db.insert("pagos", null, values)
+}
 
 
 }

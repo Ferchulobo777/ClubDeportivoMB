@@ -57,7 +57,7 @@ class VencimientosActivity : AppCompatActivity() {
 
         val dbHelper = ClubDeportivoDBHelper(this)
         val listaSocios = dbHelper.obtenerSociosConVencimiento()
-        val formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val hoy = LocalDate.now()
 
         val vencidos = mutableListOf<Cliente>()
@@ -112,7 +112,8 @@ class VencimientosActivity : AppCompatActivity() {
             tablaVencimientos.removeViews(1, childCount - 1)
         }
 
-        val formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
         val hoy = LocalDate.now()
 
         // Ordenar: más viejas primero
